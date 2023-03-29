@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
 
+    wrap_parameters format: []
+
     def create
-        user = User.create(username: params[:username], password: params[:password], password_confirmation: params[:password_confirmation])
+        user = User.create(user_params)
         if user.valid?
           render json: user, status: :created
         else
