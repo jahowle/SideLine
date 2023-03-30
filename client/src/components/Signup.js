@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/user";
 
 function Signup() {
@@ -11,7 +12,7 @@ function Signup() {
     
     function handleSubmit(e) {
         e.preventDefault();
-        fetch("/signup", {
+        fetch("/api/signup", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -59,6 +60,13 @@ function Signup() {
         {errors.map((error) => (
             <p key={error}>{error}</p>
         ))}
+
+            <div>
+                <h3>Already have an account?</h3>
+                <NavLink to="/login">
+                <button>Login</button>
+                </NavLink>
+            </div>
         </div>
     );
     }

@@ -6,7 +6,7 @@ function LogoutButton() {
     const {onLogout} = useContext(UserContext)
 
     function handleLogout() {
-        fetch("/logout", {
+        fetch("/api/logout", {
           method: "DELETE",
         }).then(() => onLogout());
       }

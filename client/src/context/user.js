@@ -10,7 +10,7 @@ function UserProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    fetch("/me")
+    fetch("/api/me")
       .then((response) => {
       if (response.ok) {
         response.json().then((user) => handleLogin(user))
