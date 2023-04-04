@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/user";
 
 function Login() {
-    const history = useHistory();
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -12,7 +11,7 @@ function Login() {
 
     const {handleLogin} = useContext(UserContext)
 
-    // const history = useHistory()
+    const history = useHistory()
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -30,7 +29,7 @@ function Login() {
           if(r.ok) {
               console.log("Login: Success")
               r.json().then((user) => handleLogin(user))
-              // history.push("/");
+              history.push("/");
           }
           else {
             r.json().then((errorData) => setErrors(errorData.error))
