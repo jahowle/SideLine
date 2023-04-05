@@ -1,4 +1,4 @@
-class API::WagersController < ApplicationController
+class Api::WagersController < ApplicationController
 
     skip_before_action :authorize, only: [:index]
 
