@@ -21,7 +21,6 @@ class Api::UsersController < ApplicationController
     
     private
 
-    # Need to figure out why using is causing an error
     def user_params
         params.permit(:username, :password, :password_confirmation, :wins, :losses, :balance)
     end

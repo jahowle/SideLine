@@ -37,6 +37,15 @@ function Login() {
         })
       }
 
+      function handleGoogleLogin() {
+        fetch("/auth/google_oauth2", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            },
+            })
+          }
+
 
   return (
     <div>
@@ -59,6 +68,9 @@ function Login() {
         <button type="submit">Login</button>
         {errors.length > 0 ? <p style={{ color: "red" }}>{errors}</p> : ""}
       </form>
+
+      <h3>Or login with Google</h3>
+      <button onClick={handleGoogleLogin}>Login with Google</button>
     </div>
   );
 }
