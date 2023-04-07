@@ -51,7 +51,8 @@ sports_dataset()
       maker_id: maker,
       taker_id: taker,
       game_id: game.id,
-      pick: [game.away_team, game.home_team].sample
+      pick: [game.away_team, game.home_team].sample,
+      status: 0
     )
   end
 
