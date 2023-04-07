@@ -5,9 +5,38 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'rest-client'
+
+def sports_data_key
+    ENV["SPORTSDATA_API_KEY"]
+end
+
 puts "🌱 Seeding spices..."
 
 Wager.destroy_all
+Game.destroy_all
+
+def sports_dataset
+    api_data = { key: sports_data_key}
+    data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/0?key=#{api_data[:key]}")
+    data_array = JSON.parse(data)[0]["Score"]
+
+    Game.create(
+        home_team: data_array["HomeTeam"],
+        away_team: data_array["AwayTeam"],
+        quarter: data_array["Quarter"].to_i,
+        away_score: data_array["AwayScore"].to_i,
+        home_score: data_array["HomeScore"].to_i,
+        has_started: data_array["HasStarted"],
+        is_in_progress: data_array["IsInProgress"],
+        is_over: data_array["IsOver"]
+    )
+
+end
+
+sports_dataset()
+
+
 
 
 30.times do
