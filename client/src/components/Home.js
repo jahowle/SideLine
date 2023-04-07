@@ -1,9 +1,16 @@
 import React from "react";
+import WagerCard from "./WagerCard";
 
-function Home() {
+function Home({wagers}) {
+
+    const wagerCards = wagers.map((wager) => {
+        return <WagerCard amount={wager.amount} />
+    })
+
     return (
         <div>
-        <h1>Home</h1>
+            <h2>This is home</h2>
+            {wagerCards}
         </div>
     );
     }
