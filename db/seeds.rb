@@ -40,22 +40,18 @@ sports_dataset()
 
 
 30.times do
-    maker_id = User.pluck(:id).sample
-    taker_id = User.pluck(:id).sample
-    winner_id = [maker_id, taker_id].sample
+    maker = User.pluck(:id).sample
+    taker = User.pluck(:id).sample
+    game = Game.all.sample
 
-    if winner_id == maker_id
-        loser_id = taker_id
-    else
-        loser_id = maker_id
-    end
+
     
     Wager.create(
-      amount: 500,
-      maker: maker_id,
-      taker: taker_id,
-      winner: winner_id,
-      loser: loser_id,
+      amount: rand(500),
+      maker_id: maker,
+      taker_id: taker,
+      game_id: game.id,
+      pick: [game.away_team, game.home_team].sample
     )
   end
 
