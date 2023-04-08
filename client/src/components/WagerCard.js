@@ -1,8 +1,6 @@
 import React from "react";
 
 function WagerCard({amount}) {
-
-    console.log(amount)
     return (
         <div>
             <h3>Wager Card</h3>

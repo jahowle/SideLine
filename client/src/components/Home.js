@@ -3,6 +3,8 @@ import WagerCard from "./WagerCard";
 
 function Home({wagers}) {
 
+    console.log(wagers)
+
     const wagerCards = wagers.map((wager) => {
         return <WagerCard amount={wager.amount} />
     })
