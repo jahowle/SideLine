@@ -41,7 +41,7 @@ sports_dataset()
 
 30.times do
     maker = User.pluck(:id).sample
-    taker = User.pluck(:id).sample
+    taker = [nil, User.pluck(:id).sample].sample
     game = Game.all.sample
 
 
@@ -52,7 +52,7 @@ sports_dataset()
       taker_id: taker,
       game_id: game.id,
       pick: [game.away_team, game.home_team].sample,
-      status: 0
+      status: taker ? 1 : 0
     )
   end
 
