@@ -4,6 +4,6 @@ class Api::WagersController < ApplicationController
 
     def index
         wagers = Wager.all 
-        render json: wagers, include: [:taker, :maker, :winner, :loser]
+        render json: wagers, include: [:taker, :maker, :winner, :loser, :game]
     end
 end
