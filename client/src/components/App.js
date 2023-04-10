@@ -51,7 +51,7 @@ function App() {
           </Route>
 
           <Route exact path="/my-profile">
-            <MyProfile />
+            <MyProfile wagers={wagers} />
           </Route>
 
           <Route exact path="/">
