@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { UserContext } from "../context/user";
 import Home from "./Home";
 import Login from "./Login";
+import MyProfile from "./MyProfile";
 
 function App() {
   const [wagers, setWagers] = useState([]);
@@ -47,6 +48,10 @@ function App() {
         <Switch>
           <Route exact path="/login">
             <Login />
+          </Route>
+
+          <Route exact path="/my-profile">
+            <MyProfile />
           </Route>
 
           <Route exact path="/">

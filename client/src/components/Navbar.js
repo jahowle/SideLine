@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/user";
 import LogoutButton from "./LogoutButton";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const { user, isLoggedIn, onLogout } = useContext(UserContext);
@@ -13,6 +14,9 @@ function Navbar() {
       >
         <div className="flex flex-row items-center w-3/4 bg-slate-50">
           <h2 className="mr-4 text-xl">Welcome, {user.username}</h2>
+          <Link to="/my-profile">
+            <button>My Pofile</button>
+          </Link>
           <LogoutButton />
         </div>
       </div>
