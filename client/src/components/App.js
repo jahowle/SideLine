@@ -67,7 +67,7 @@ function App() {
           </Route>
 
           <Route exact path="/create-wager">
-            <CreateWager />
+            <CreateWager games={games} />
           </Route>
 
           <Route exact path="/">

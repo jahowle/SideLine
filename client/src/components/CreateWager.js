@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/user";
 
-function CreateWager() {
+function CreateWager({ games }) {
   const [formData, setFormData] = useState({});
   const { user } = useContext(UserContext);
 
@@ -16,13 +16,19 @@ function CreateWager() {
     console.log("submitted");
   }
 
+  const gamesToDisplay = games.map((game) => {
+    return (
+      <option key={game.id} value={game.id}>
+        {game.home_team} vs {game.away_team}
+      </option>
+    );
+  });
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label>Game</label>
-        <select>
-          <option value="1">SF vs PHI</option>
-        </select>
+        <select>{gamesToDisplay}</select>
 
         <label>Pick</label>
         <select>
