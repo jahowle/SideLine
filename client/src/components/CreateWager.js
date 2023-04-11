@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/user";
 
-function CreateWager({ games }) {
+function CreateWager({ games, isLoaded }) {
   const [formData, setFormData] = useState({});
   const { user } = useContext(UserContext);
+  const [selectedGame, setSelectedGame] = useState({});
 
   function handleChange(e) {
     const name = e.target.name;
@@ -24,16 +25,29 @@ function CreateWager({ games }) {
     );
   });
 
+  function handleGameSelect(e) {
+    const selectedGameId = parseInt(e.target.value);
+    const selectedGame = games.find((game) => game.id === selectedGameId);
+    setSelectedGame(selectedGame);
+  }
+
+  if (!isLoaded) return <h1>Loading...</h1>;
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label>Game</label>
-        <select>{gamesToDisplay}</select>
+        <select onChange={handleGameSelect}>
+          <option>Select a Game</option>
+          {gamesToDisplay}
+        </select>
+
+        {}
 
         <label>Pick</label>
         <select>
-          <option value="1">SF</option>
-          <option value="2">PHI</option>
+          <option>{selectedGame.home_team}</option>
+          <option>{selectedGame.away_team}</option>
         </select>
         <label>Amount</label>
         <input type="number" />

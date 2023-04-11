@@ -22,7 +22,6 @@ function App() {
         r.json().then((wagers) => {
           console.log(wagers);
           setWagers(wagers);
-          setIsLoaded(true);
         });
       } else {
         console.log("error getting wagers");
@@ -33,6 +32,7 @@ function App() {
         r.json().then((games) => {
           console.log(games);
           setGames(games);
+          setIsLoaded(true);
         });
       } else {
         console.log("error getting games");
@@ -52,6 +52,8 @@ function App() {
     setWagers(updatedWagers);
   }
 
+  console.log(isLoaded);
+
   if (isLoggedIn) {
     return (
       <div className="App">
@@ -67,7 +69,7 @@ function App() {
           </Route>
 
           <Route exact path="/create-wager">
-            <CreateWager games={games} />
+            <CreateWager games={games} isLoaded={isLoaded} />
           </Route>
 
           <Route exact path="/">
