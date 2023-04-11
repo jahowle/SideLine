@@ -29,7 +29,8 @@ def sports_dataset
         home_score: data_array["HomeScore"].to_i,
         has_started: data_array["HasStarted"],
         is_in_progress: data_array["IsInProgress"],
-        is_over: data_array["IsOver"]
+        is_over: data_array["IsOver"],
+        game_key: data_array["GameKey"].to_i
     )
 
 end

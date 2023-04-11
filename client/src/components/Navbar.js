@@ -17,6 +17,9 @@ function Navbar() {
           <Link to="/my-profile">
             <button>My Pofile</button>
           </Link>
+          <Link to="/create-wager">
+            <button>Create Wager</button>
+          </Link>
           <LogoutButton />
         </div>
       </div>

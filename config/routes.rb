@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get "/me", to: "users#show"
     post "/signup", to: "users#create"
     resources :wagers, only: [:create, :index, :show, :update, :delete]
+    resources :games, only: [:index, :show]
   end
 
   get "auth/:provider/callback", to: "sessions#omniauth"

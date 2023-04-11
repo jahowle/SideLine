@@ -7,10 +7,12 @@ import { UserContext } from "../context/user";
 import Home from "./Home";
 import Login from "./Login";
 import MyProfile from "./MyProfile";
+import CreateWager from "./CreateWager";
 
 function App() {
   const [wagers, setWagers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [games, setGames] = useState([]);
 
   const { isLoggedIn, user } = useContext(UserContext);
 
@@ -24,6 +26,16 @@ function App() {
         });
       } else {
         console.log("error getting wagers");
+      }
+    });
+    fetch("/api/games").then((r) => {
+      if (r.ok) {
+        r.json().then((games) => {
+          console.log(games);
+          setGames(games);
+        });
+      } else {
+        console.log("error getting games");
       }
     });
   }, []);
@@ -52,6 +64,10 @@ function App() {
 
           <Route exact path="/my-profile">
             <MyProfile wagers={wagers} />
+          </Route>
+
+          <Route exact path="/create-wager">
+            <CreateWager />
           </Route>
 
           <Route exact path="/">
