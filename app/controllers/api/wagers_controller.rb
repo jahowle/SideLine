@@ -13,9 +13,21 @@ class Api::WagersController < ApplicationController
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
+    def create
+        wager = Wager.create!(
+            maker_id: params[:maker_id],
+            amount: params[:amount],
+            pick: params[:pick],
+            game_id: params[:game_id],
+            status: 0
+        )
+        render json: wager
+    end
+
+
     private
 
     def wager_params
-        params.permit(:taker_id, :status, :maker_id, :amount)
+        params.permit(:taker_id, :status, :maker_id, :amount, :pick, :game_id)
     end
 end
