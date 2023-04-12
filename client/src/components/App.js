@@ -20,7 +20,6 @@ function App() {
     fetch("/api/wagers").then((r) => {
       if (r.ok) {
         r.json().then((wagers) => {
-          console.log(wagers);
           setWagers(wagers);
         });
       } else {
@@ -30,7 +29,6 @@ function App() {
     fetch("/api/games").then((r) => {
       if (r.ok) {
         r.json().then((games) => {
-          console.log(games);
           setGames(games);
           setIsLoaded(true);
         });
@@ -51,8 +49,6 @@ function App() {
     });
     setWagers(updatedWagers);
   }
-
-  console.log(isLoaded);
 
   if (isLoggedIn) {
     return (

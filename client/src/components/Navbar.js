@@ -14,6 +14,10 @@ function Navbar() {
       >
         <div className="flex flex-row items-center w-3/4 bg-slate-50">
           <h2 className="mr-4 text-xl">Welcome, {user.username}</h2>
+          <h2>${user.balance ? user.balance : "00"}</h2>
+          <Link to="/">
+            <button>Home</button>
+          </Link>
           <Link to="/my-profile">
             <button>My Pofile</button>
           </Link>
