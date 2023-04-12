@@ -40,7 +40,6 @@ function App() {
   }, []);
 
   function updateTaker(wagerId) {
-    console.log(wagerId);
     const updatedWagers = wagers.map((wager) => {
       if (wager.id === wagerId) {
         return { ...wager, taker_id: user.id, taker: user, status: "taken" };
@@ -49,6 +48,10 @@ function App() {
       }
     });
     setWagers(updatedWagers);
+  }
+
+  function updateWagers(newWager) {
+    setWagers([...wagers, newWager]);
   }
 
   if (isLoggedIn) {
@@ -70,7 +73,11 @@ function App() {
           </Route>
 
           <Route exact path="/create-wager">
-            <CreateWager games={games} isLoaded={isLoaded} />
+            <CreateWager
+              games={games}
+              isLoaded={isLoaded}
+              updateWagers={updateWagers}
+            />
           </Route>
 
           <Route exact path="/">

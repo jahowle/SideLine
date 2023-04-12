@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/user";
 
-function CreateWager({ games, isLoaded }) {
-  const { user } = useContext(UserContext);
+function CreateWager({ games, isLoaded, updateWagers }) {
+  const { user, setUser } = useContext(UserContext);
   const [selectedGame, setSelectedGame] = useState({});
   const [amount, setAmount] = useState(0);
   const [pick, setPick] = useState("");
@@ -23,7 +23,8 @@ function CreateWager({ games, isLoaded }) {
     })
       .then((r) => r.json())
       .then((newWager) => {
-        console.log(newWager);
+        updateWagers(newWager);
+        setUser({ ...user, balance: user.balance - amount });
       });
   }
 

@@ -21,7 +21,8 @@ class Api::WagersController < ApplicationController
             game_id: params[:game_id],
             status: 0
         )
-        render json: wager
+        wager.maker.update(balance: wager.maker.balance - wager.amount)
+        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
 
