@@ -8,21 +8,18 @@ function Navbar() {
 
   if (isLoggedIn) {
     return (
-      <div
-        id="navbar"
-        className="h-12 bg-amber-300 flex flex-row items-center justify-center"
-      >
-        <div className="flex flex-row items-center w-3/4 bg-slate-50">
+      <div className="navbar bg-primary text-primary-content">
+        <div>
           <h2 className="mr-4 text-xl">Welcome, {user.username}</h2>
-          <h2>${user.balance ? user.balance : "00"}</h2>
+          <h2>Balance: ${user.balance ? user.balance : "0.00"}</h2>
           <Link to="/">
-            <button>Home</button>
+            <button className="btn mx-4">Home</button>
           </Link>
           <Link to="/my-profile">
-            <button>My Pofile</button>
+            <button className="btn mx-4">My Pofile</button>
           </Link>
           <Link to="/create-wager">
-            <button>Create Wager</button>
+            <button className="btn mx-4">Create Wager</button>
           </Link>
           <LogoutButton />
         </div>
