@@ -50,9 +50,11 @@ function WagerCard({
           </h4>
         )}
       </div>
-      <button onClick={handleClick} className="border-2 border-black">
-        <h4 className="text-black">Take Bet</h4>
-      </button>
+      {taker ? null : (
+        <button onClick={handleClick} className="border-2 border-black">
+          <h4 className="text-black">Take Bet</h4>
+        </button>
+      )}
     </div>
   );
 }

@@ -23,7 +23,7 @@ function WagersTaken({ wagers }) {
       return null;
     }
   });
-  return <div>{wagersTaken}</div>;
+  return <div className="flex flex-row flex-wrap w-3/4">{wagersTaken}</div>;
 }
 
 export default WagersTaken;

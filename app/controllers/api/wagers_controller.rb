@@ -10,6 +10,7 @@ class Api::WagersController < ApplicationController
     def update
         wager = Wager.find(params[:id])
         wager.update(wager_params)
+        wager.taker.update(balance: wager.taker.balance - wager.amount)
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
