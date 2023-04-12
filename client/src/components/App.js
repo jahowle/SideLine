@@ -8,6 +8,7 @@ import Home from "./Home";
 import Login from "./Login";
 import MyProfile from "./MyProfile";
 import CreateWager from "./CreateWager";
+import AddFunds from "./AddFunds";
 
 function App() {
   const [wagers, setWagers] = useState([]);
@@ -62,6 +63,10 @@ function App() {
 
           <Route exact path="/my-profile">
             <MyProfile wagers={wagers} />
+          </Route>
+
+          <Route exact path="/add-funds">
+            <AddFunds />
           </Route>
 
           <Route exact path="/create-wager">

@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/user";
 import WagerCard from "./WagerCard";
+import { Link } from "react-router-dom";
 
 function MyProfile({ wagers }) {
   const { user } = useContext(UserContext);
 
-  const wagersToDisplay = wagers.map((wager) => {
+  const wagersMade = wagers.map((wager) => {
     if (wager.maker_id === user.id) {
       return (
         <WagerCard
@@ -27,8 +28,12 @@ function MyProfile({ wagers }) {
 
   return (
     <div>
-      <h2>My Profile</h2>
-      <div>{wagersToDisplay}</div>
+      <Link to="/add-funds">
+        <button className="btn btn-primary">Add Funds</button>
+      </Link>
+      <h2>Wagers Made</h2>
+      <div>{wagersMade}</div>
+      <h2>Wagers Taken</h2>
     </div>
   );
 }

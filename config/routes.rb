@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     delete "/logout", to: "sessions#destroy"
     get "/me", to: "users#show"
     post "/signup", to: "users#create"
+    patch "/update/:id", to: "users#update"
     resources :wagers, only: [:create, :index, :show, :update, :delete]
     resources :games, only: [:index, :show]
   end

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 function Navbar() {
   const { user, isLoggedIn, onLogout } = useContext(UserContext);
 
+  console.log(user.balance);
+
   if (isLoggedIn) {
     return (
       <div className="navbar bg-primary text-primary-content">

@@ -4,4 +4,18 @@ class Wager < ApplicationRecord
     belongs_to :taker, foreign_key: :taker_id, class_name: "User", optional: true
 
     enum status: [:open, :taken, :in_progress, :expired, :finished]
+
+    validate :check_maker_balance, on: :create
+    validate :check_taker_balance, on: :update
+
+    def check_maker_balance
+        if self.amount > self.maker.balance
+            self.errors.add(:amount, "You don't have enough money to make this wager")
+        end
+    end
+
+    def check_taker_balance
+        self.taker.balance >= self.amount
+    end
+
 end
