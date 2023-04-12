@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/user";
+import { useHistory } from "react-router-dom";
 
 function CreateWager({ games, isLoaded, updateWagers }) {
   const { user, setUser } = useContext(UserContext);
   const [selectedGame, setSelectedGame] = useState({});
   const [amount, setAmount] = useState(0);
   const [pick, setPick] = useState("");
+  const history = useHistory();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -26,6 +28,7 @@ function CreateWager({ games, isLoaded, updateWagers }) {
         updateWagers(newWager);
         setUser({ ...user, balance: user.balance - amount });
       });
+    history.push("/");
   }
 
   const gamesToDisplay = games.map((game) => {
