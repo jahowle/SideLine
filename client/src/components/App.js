@@ -64,7 +64,7 @@ function App() {
             <Login />
           </Route>
 
-          <Route exact path="/my-profile">
+          <Route path="/my-profile">
             <MyProfile wagers={wagers} />
           </Route>
 
