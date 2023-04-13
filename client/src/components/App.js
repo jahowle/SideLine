@@ -79,7 +79,8 @@ function App() {
           <Route path="/my-profile">
             <MyProfile
               wagers={wagers}
-              updateWagers={deleteWager}
+              deleteWager={deleteWager}
+              updateWagers={updateWagers}
               updateTaker={updateTaker}
             />
           </Route>
