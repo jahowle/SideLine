@@ -57,6 +57,7 @@ function App() {
   }
 
   function updateWagers(newWager) {
+    console.log("The new wager", newWager);
     setWagers([...wagers, newWager]);
   }
 
@@ -100,7 +101,8 @@ function App() {
               <Home
                 wagers={wagers}
                 updateTaker={updateTaker}
-                updateWagers={deleteWager}
+                deleteWager={deleteWager}
+                updateWagers={updateWagers}
               />
             ) : (
               <h2>Loading...</h2>

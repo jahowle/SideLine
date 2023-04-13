@@ -5,11 +5,15 @@ class Wager < ApplicationRecord
 
     enum status: [:open, :taken, :in_progress, :expired, :finished]
 
-    validate :check_maker_balance, on: :create
+    validate :check_maker_balance, on: :create, unless: :skip_check_maker_balance
     validate :check_taker_balance, on: :update, unless: :skip_check_taker_balance
     validate :cant_take_own_wager, on: :update
 
     def skip_check_taker_balance
+        true
+    end
+
+    def skip_check_maker_balance
         true
     end
 

@@ -12,6 +12,7 @@ function WagerCard({
   updateTaker,
   updateWagers,
   id,
+  deleteWager,
   game,
 }) {
   const { user, setUser } = useContext(UserContext);
@@ -27,7 +28,7 @@ function WagerCard({
     }).then((r) => {
       if (r.ok) {
         r.json().then((updatedWager) => {
-          updateWagers(updatedWager);
+          updateTaker(updatedWager);
           setUser({ ...user, balance: user.balance - updatedWager.amount });
         });
       } else {
@@ -55,7 +56,7 @@ function WagerCard({
         method: "DELETE",
       });
       setUser({ ...user, balance: user.balance + amount });
-      updateWagers(id);
+      deleteWager(id);
     }
   }
 

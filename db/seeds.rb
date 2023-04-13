@@ -15,6 +15,7 @@ puts "🌱 Seeding spices..."
 
 Wager.destroy_all
 Game.destroy_all
+Team.destroy_all
 
 def sports_dataset
     api_data = { key: sports_data_key}
@@ -33,6 +34,14 @@ def sports_dataset
         game_key: data_array["GameKey"].to_i
     )
 
+    Team.create(
+        name: data_array["HomeTeam"]
+    )
+
+    Team.create(
+        name: data_array["AwayTeam"]
+    )
+
 end
 
 sports_dataset()
@@ -41,13 +50,14 @@ sports_dataset()
 
 
 30.times do
+
     maker = User.pluck(:id).sample
     taker = [nil, User.pluck(:id).sample].sample
     game = Game.all.sample
 
 
     
-    Wager.create(
+    wager = Wager.new(
       amount: rand(500),
       maker_id: maker,
       taker_id: taker,
@@ -55,6 +65,12 @@ sports_dataset()
       pick: [game.away_team, game.home_team].sample,
       status: taker ? 1 : 0
     )
+
+    wager.skip_check_maker_balance
+
+    wager.save
+
+
   end
 
 puts "✅ Done seeding!"

@@ -1,7 +1,7 @@
 import React from "react";
 import WagerCard from "./WagerCard";
 
-function Home({ wagers, updateTaker, updateWagers }) {
+function Home({ wagers, updateTaker, updateWagers, deleteWager }) {
   const wagerCards = wagers.map((wager) => {
     return (
       <WagerCard
@@ -17,6 +17,7 @@ function Home({ wagers, updateTaker, updateWagers }) {
         updateTaker={updateTaker}
         game={wager.game}
         updateWagers={updateWagers}
+        deleteWager={deleteWager}
       />
     );
   });
