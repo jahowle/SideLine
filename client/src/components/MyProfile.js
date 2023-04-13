@@ -5,7 +5,7 @@ import { Link, useRouteMatch, Route } from "react-router-dom";
 import WagersMade from "./WagersMade";
 import WagersTaken from "./WagersTaken";
 
-function MyProfile({ wagers }) {
+function MyProfile({ wagers, updateWagers, updateTaker }) {
   const { user } = useContext(UserContext);
   const match = useRouteMatch();
 
@@ -23,10 +23,14 @@ function MyProfile({ wagers }) {
         </Link>
       </div>
       <Route path="/my-profile/wagers-made">
-        <WagersMade wagers={wagers} />
+        <WagersMade
+          wagers={wagers}
+          updateWagers={updateWagers}
+          updateTaker={updateTaker}
+        />
       </Route>
       <Route path="/my-profile/wagers-taken">
-        <WagersTaken wagers={wagers} />
+        <WagersTaken wagers={wagers} updateTaker={updateTaker} />
       </Route>
     </div>
   );

@@ -76,7 +76,11 @@ function App() {
           </Route>
 
           <Route path="/my-profile">
-            <MyProfile wagers={wagers} updateWagers={deleteWager} />
+            <MyProfile
+              wagers={wagers}
+              updateWagers={deleteWager}
+              updateTaker={updateTaker}
+            />
           </Route>
 
           <Route exact path="/add-funds">

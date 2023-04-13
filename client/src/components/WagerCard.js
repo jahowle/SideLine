@@ -15,6 +15,7 @@ function WagerCard({
   game,
 }) {
   const { user, setUser } = useContext(UserContext);
+  const [errors, setErrors] = useState([]);
 
   function handleClick() {
     fetch(`/api/wagers/${id}`, {
@@ -23,12 +24,16 @@ function WagerCard({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ taker_id: user.id, status: "taken" }),
-    })
-      .then((r) => r.json())
-      .then((updatedWager) => {
-        updateTaker(updatedWager);
-        setUser({ ...user, balance: user.balance - updatedWager.amount });
-      });
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((updatedWager) => {
+          updateWagers(updatedWager);
+          setUser({ ...user, balance: user.balance - updatedWager.amount });
+        });
+      } else {
+        r.json().then((errorData) => setErrors(errorData.errors));
+      }
+    });
   }
 
   function handleCancel() {
