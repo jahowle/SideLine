@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     post "/signup", to: "users#create"
     patch "/update/:id", to: "users#update"
     patch "/cancel_take_wager/:id", to: "wagers#cancel_take_wager"
-    resources :wagers, only: [:create, :index, :show, :update, :delete]
+    resources :wagers, only: [:create, :index, :show, :update, :destroy]
     resources :games, only: [:index, :show]
   end
 

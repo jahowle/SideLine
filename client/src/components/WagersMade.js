@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import WagerCard from "./WagerCard";
 import { UserContext } from "../context/user";
 
-function WagersMade({ wagers }) {
+function WagersMade({ wagers, updateWagers }) {
   const { user } = useContext(UserContext);
 
   const wagersMade = wagers.map((wager) => {
@@ -19,6 +19,7 @@ function WagersMade({ wagers }) {
           maker={wager.maker}
           taker={wager.taker}
           game={wager.game}
+          updateWagers={updateWagers}
         />
       );
     } else {

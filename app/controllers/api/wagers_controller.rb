@@ -37,7 +37,7 @@ class Api::WagersController < ApplicationController
     def destroy
         wager = Wager.find(params[:id])
         wager.destroy
-        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+        head :no_content
     end
 
 

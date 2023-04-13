@@ -60,6 +60,11 @@ function App() {
     setWagers([...wagers, newWager]);
   }
 
+  function deleteWager(id) {
+    const updatedWagers = wagers.filter((wager) => wager.id !== id);
+    setWagers(updatedWagers);
+  }
+
   if (isLoggedIn) {
     return (
       <div className="App">
@@ -71,7 +76,7 @@ function App() {
           </Route>
 
           <Route path="/my-profile">
-            <MyProfile wagers={wagers} />
+            <MyProfile wagers={wagers} updateWagers={deleteWager} />
           </Route>
 
           <Route exact path="/add-funds">
@@ -88,7 +93,11 @@ function App() {
 
           <Route exact path="/">
             {isLoaded ? (
-              <Home wagers={wagers} updateTaker={updateTaker} />
+              <Home
+                wagers={wagers}
+                updateTaker={updateTaker}
+                updateWagers={deleteWager}
+              />
             ) : (
               <h2>Loading...</h2>
             )}

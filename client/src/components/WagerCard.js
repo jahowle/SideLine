@@ -10,6 +10,7 @@ function WagerCard({
   maker,
   taker,
   updateTaker,
+  updateWagers,
   id,
   game,
 }) {
@@ -44,6 +45,12 @@ function WagerCard({
           updateTaker(updatedWager);
           setUser({ ...user, balance: user.balance + updatedWager.amount });
         });
+    } else if (maker.id === user.id) {
+      fetch(`/api/wagers/${id}`, {
+        method: "DELETE",
+      });
+      setUser({ ...user, balance: user.balance + amount });
+      updateWagers(id);
     }
   }
 
