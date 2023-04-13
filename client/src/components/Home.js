@@ -15,6 +15,7 @@ function Home({ wagers, updateTaker }) {
         maker={wager.maker}
         taker={wager.taker}
         updateTaker={updateTaker}
+        game={wager.game}
       />
     );
   });

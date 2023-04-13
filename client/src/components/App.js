@@ -39,10 +39,16 @@ function App() {
     });
   }, []);
 
-  function updateTaker(wagerId) {
+  function updateTaker(updatedWager) {
+    console.log("The updated wager", updatedWager);
     const updatedWagers = wagers.map((wager) => {
-      if (wager.id === wagerId) {
-        return { ...wager, taker_id: user.id, taker: user, status: "taken" };
+      if (wager.id === updatedWager.id) {
+        return {
+          ...wager,
+          taker_id: updatedWager.taker_id,
+          taker: updatedWager.taker,
+          status: updatedWager.status,
+        };
       } else {
         return wager;
       }

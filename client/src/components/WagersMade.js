@@ -18,6 +18,7 @@ function WagersMade({ wagers }) {
           status={wager.status}
           maker={wager.maker}
           taker={wager.taker}
+          game={wager.game}
         />
       );
     } else {

@@ -9,8 +9,15 @@ class Api::WagersController < ApplicationController
 
     def update
         wager = Wager.find(params[:id])
-        wager.update(wager_params)
+        wager.update!(wager_params)
         wager.taker.update(balance: wager.taker.balance - wager.amount)
+        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+    end
+
+    def cancel_take_wager
+        wager = Wager.find(params[:id])
+        wager.update!(taker_id: nil, status: 0)
+        current_user.update(balance: current_user.balance + wager.amount)
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
@@ -23,6 +30,12 @@ class Api::WagersController < ApplicationController
             status: 0
         )
         wager.maker.update(balance: wager.maker.balance - wager.amount)
+        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+    end
+
+    def destroy
+        wager = Wager.find(params[:id])
+        wager.destroy
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 

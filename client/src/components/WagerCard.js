@@ -11,8 +11,9 @@ function WagerCard({
   taker,
   updateTaker,
   id,
+  game,
 }) {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   function handleClick() {
     fetch(`/api/wagers/${id}`, {
@@ -24,9 +25,36 @@ function WagerCard({
     })
       .then((r) => r.json())
       .then((updatedWager) => {
-        console.log(updatedWager);
-        updateTaker(updatedWager.id);
+        updateTaker(updatedWager);
+        setUser({ ...user, balance: user.balance - updatedWager.amount });
       });
+  }
+
+  function handleCancel() {
+    if (taker && taker.id === user.id) {
+      fetch(`/api/cancel_take_wager/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ taker: null }),
+      })
+        .then((r) => r.json())
+        .then((updatedWager) => {
+          updateTaker(updatedWager);
+          setUser({ ...user, balance: user.balance + updatedWager.amount });
+        });
+    }
+  }
+
+  function CancelButton() {
+    if ((taker && taker.id === user.id) || maker.id === user.id) {
+      return (
+        <button onClick={handleCancel} className="btn">
+          Cancel Wager
+        </button>
+      );
+    }
   }
 
   return (
@@ -51,10 +79,11 @@ function WagerCard({
         )}
       </div>
       {taker ? null : (
-        <button onClick={handleClick} className="border-2 border-black">
-          <h4 className="text-black">Take Bet</h4>
+        <button onClick={handleClick} className="btn">
+          <h4 className="text-white">Take Bet</h4>
         </button>
       )}
+      {CancelButton()}
     </div>
   );
 }
