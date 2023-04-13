@@ -16,6 +16,7 @@ class Api::WagersController < ApplicationController
 
     def cancel_take_wager
         wager = Wager.find(params[:id])
+        wager.skip_check_taker_balance
         wager.update!(taker_id: nil, status: 0)
         current_user.update(balance: current_user.balance + wager.amount)
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
