@@ -9,14 +9,18 @@ class Api::WagersController < ApplicationController
 
     def update
         wager = Wager.find(params[:id])
-        wager.update!(wager_params)
-        wager.taker.update(balance: wager.taker.balance - wager.amount)
-        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+        wager.assign_attributes(wager_params)
+        if wager.amount > current_user.balance
+            render json: { errors: ["You don't have enough money to take this wager"] }, status: :unprocessable_entity
+        else
+            wager.save!
+            current_user.update(balance: current_user.balance - wager.amount)
+            render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+        end
     end
 
     def cancel_take_wager
         wager = Wager.find(params[:id])
-        wager.skip_check_taker_balance
         wager.update!(taker_id: nil, status: 0)
         current_user.update(balance: current_user.balance + wager.amount)
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]

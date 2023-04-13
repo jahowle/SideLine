@@ -5,17 +5,9 @@ class Wager < ApplicationRecord
 
     enum status: [:open, :taken, :in_progress, :expired, :finished]
 
-    validate :check_maker_balance, on: :create, unless: :skip_check_maker_balance
-    validate :check_taker_balance, on: :update, unless: :skip_check_taker_balance
+    validate :check_maker_balance, on: :create
+    # validate :check_taker_balance
     validate :cant_take_own_wager, on: :update
-
-    def skip_check_taker_balance
-        true
-    end
-
-    def skip_check_maker_balance
-        true
-    end
 
     def check_maker_balance
         if self.amount > self.maker.balance
@@ -29,23 +21,6 @@ class Wager < ApplicationRecord
         end
     end
 
-    def check_game_status
-        if self.game.is_over
-            self.errors.add(:game_id, "This game is already over")
-        end
-    end
-
-    def check_game_start
-        if self.game.has_started
-            self.errors.add(:game_id, "This game has already started")
-        end
-    end
-
-    def check_game_in_progress
-        if self.game.is_in_progress
-            self.errors.add(:game_id, "This game is already in progress")
-        end
-    end
 
     def cant_take_own_wager
         if self.maker_id == self.taker_id

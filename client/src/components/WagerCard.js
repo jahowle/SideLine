@@ -32,7 +32,7 @@ function WagerCard({
           setUser({ ...user, balance: user.balance - updatedWager.amount });
         });
       } else {
-        r.json().then((errorData) => setErrors(errorData.errors));
+        r.json().then((errorData) => console.log(errorData.errors));
       }
     });
   }

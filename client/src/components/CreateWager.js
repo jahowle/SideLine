@@ -22,13 +22,17 @@ function CreateWager({ games, isLoaded, updateWagers }) {
         maker_id: user.id,
         game_id: selectedGame.id,
       }),
-    })
-      .then((r) => r.json())
-      .then((newWager) => {
-        updateWagers(newWager);
-        setUser({ ...user, balance: user.balance - amount });
-      });
-    history.push("/");
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((newWager) => {
+          updateWagers(newWager);
+          setUser({ ...user, balance: user.balance - amount });
+          history.push("/");
+        });
+      } else {
+        r.json().then((errorData) => console.log(errorData.errors));
+      }
+    });
   }
 
   const gamesToDisplay = games.map((game) => {
