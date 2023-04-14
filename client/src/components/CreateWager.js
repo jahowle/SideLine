@@ -7,6 +7,7 @@ function CreateWager({ games, isLoaded, updateWagers }) {
   const [selectedGame, setSelectedGame] = useState({});
   const [amount, setAmount] = useState(0);
   const [pick, setPick] = useState("");
+  const [errors, setErrors] = useState([]);
   const history = useHistory();
 
   function handleSubmit(e) {
@@ -30,7 +31,7 @@ function CreateWager({ games, isLoaded, updateWagers }) {
           history.push("/");
         });
       } else {
-        r.json().then((errorData) => console.log(errorData.errors));
+        r.json().then((errorData) => setErrors(errorData.errors));
       }
     });
   }
@@ -94,6 +95,13 @@ function CreateWager({ games, isLoaded, updateWagers }) {
         <button className="btn btn-primary btn-wide" type="submit">
           Create Wager
         </button>
+        {errors.length > 0 && (
+          <p style={{ color: "red" }}>
+            {errors.map((error) => (
+              <p key={error}>{error}</p>
+            ))}
+          </p>
+        )}
       </form>
     </div>
   );
