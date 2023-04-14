@@ -60,26 +60,40 @@ function CreateWager({ games, isLoaded, updateWagers }) {
   if (!isLoaded) return <h1>Loading...</h1>;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>Game</label>
-        <select onChange={handleGameSelect}>
+    <div className="flex flex-col items-center">
+      <form
+        className="flex flex-col items-center p-4 bg-gray-700 rounded-lg shadow-lg mt-8"
+        onSubmit={handleSubmit}
+      >
+        <label className="text-m mb-2">Game</label>
+        <select
+          className="select select-primary w-full max-w-xs mb-4"
+          onChange={handleGameSelect}
+        >
           <option value="none" selected disabled hidden>
             Select A Game
           </option>
           {gamesToDisplay}
         </select>
 
-        {}
-
-        <label>Pick</label>
-        <select onChange={handlePickSelect}>
+        <label className="mb-2">Pick</label>
+        <select
+          className="select select-primary w-full max-w-xs mb-4"
+          onChange={handlePickSelect}
+        >
           <option>{selectedGame.home_team}</option>
           <option>{selectedGame.away_team}</option>
         </select>
-        <label>Amount</label>
-        <input type="number" onChange={handleAmountChange} />
-        <button type="submit">Create Wager</button>
+        <label className="mb-2">Amount</label>
+        <input
+          type="number"
+          className="input input-bordered input-primary w-full max-w-xs mb-4"
+          placeholder="Enter Wager Amount"
+          onChange={handleAmountChange}
+        />
+        <button className="btn btn-primary btn-wide" type="submit">
+          Create Wager
+        </button>
       </form>
     </div>
   );

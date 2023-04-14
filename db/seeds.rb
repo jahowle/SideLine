@@ -66,7 +66,7 @@ sports_dataset()
       status: taker ? 1 : 0
     )
 
-    wager.skip_check_maker_balance
+    wager.flag = true
 
     wager.save
 

@@ -1,6 +1,6 @@
 class Api::WagersController < ApplicationController
 
-    skip_before_action :authorize, only: [:index]
+    skip_before_action :authorize, only: [:index, :create]
 
     def index
         wagers = Wager.all 

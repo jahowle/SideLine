@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     post "/login", to: "sessions#create"
+    post "/google-login", to: redirect("/auth/google_oauth2")
     delete "/logout", to: "sessions#destroy"
     get "/me", to: "users#show"
     post "/signup", to: "users#create"

@@ -5,9 +5,15 @@ class Wager < ApplicationRecord
 
     enum status: [:open, :taken, :in_progress, :expired, :finished]
 
-    validate :check_maker_balance, on: :create
+    validate :check_maker_balance, on: :create, :unless => :flag?
     # validate :check_taker_balance
     validate :cant_take_own_wager, on: :update
+
+    attr_accessor :flag
+
+    def flag?
+        @flag
+    end
 
     def check_maker_balance
         if self.amount > self.maker.balance
