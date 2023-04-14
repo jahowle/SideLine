@@ -7,7 +7,7 @@ class Wager < ApplicationRecord
 
     validates :amount, :pick, :game, presence: true
 
-    # validate :check_maker_balance, on: :create, :unless => :flag?
+    validate :check_maker_balance, on: :create, :unless => :flag?
     # validate :check_taker_balance
     validate :cant_take_own_wager, on: :update
 

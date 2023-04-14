@@ -69,7 +69,8 @@ sports_dataset()
     game = Game.all.sample
 
 
-   Wager.create(
+    
+    wager = Wager.create(
       amount: rand(500),
       maker_id: maker,
       taker_id: taker,
@@ -78,9 +79,9 @@ sports_dataset()
       status: taker ? 1 : 0
     )
 
-    # wager.flag = true
+    wager.flag = true
 
-    # wager.save
+    wager.save
 
 
   end
