@@ -69,8 +69,7 @@ sports_dataset()
     game = Game.all.sample
 
 
-    
-    wager = Wager.create(
+   Wager.create(
       amount: rand(500),
       maker_id: maker,
       taker_id: taker,
