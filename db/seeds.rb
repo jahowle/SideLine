@@ -17,47 +17,47 @@ Wager.destroy_all
 Game.destroy_all
 Team.destroy_all
 
-# def sports_dataset
-#     api_data = { key: sports_data_key}
-#     data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/0?key=#{api_data[:key]}")
-#     data_array = JSON.parse(data)[0]["Score"]
+def sports_dataset
+    api_data = { key: sports_data_key}
+    data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/0?key=#{api_data[:key]}")
+    data_array = JSON.parse(data)[0]["Score"]
 
-#     Game.create(
-#         home_team: data_array["HomeTeam"],
-#         away_team: data_array["AwayTeam"],
-#         quarter: data_array["Quarter"].to_i,
-#         away_score: data_array["AwayScore"].to_i,
-#         home_score: data_array["HomeScore"].to_i,
-#         has_started: data_array["HasStarted"],
-#         is_in_progress: data_array["IsInProgress"],
-#         is_over: data_array["IsOver"],
-#         game_key: data_array["GameKey"].to_i
-#     )
+    Game.create(
+        home_team: data_array["HomeTeam"],
+        away_team: data_array["AwayTeam"],
+        quarter: data_array["Quarter"].to_i,
+        away_score: data_array["AwayScore"].to_i,
+        home_score: data_array["HomeScore"].to_i,
+        has_started: data_array["HasStarted"],
+        is_in_progress: data_array["IsInProgress"],
+        is_over: data_array["IsOver"],
+        game_key: data_array["GameKey"].to_i
+    )
 
-#     Team.create(
-#         name: data_array["HomeTeam"]
-#     )
+    Team.create(
+        name: data_array["HomeTeam"]
+    )
 
-#     Team.create(
-#         name: data_array["AwayTeam"]
-#     )
+    Team.create(
+        name: data_array["AwayTeam"]
+    )
 
-# end
+end
 
-# sports_dataset()
+sports_dataset()
 
-Game.create(
-    home_team: "SF",
-    away_team: "PHI"
-)
+# Game.create(
+#     home_team: "SF",
+#     away_team: "PHI"
+# )
 
-Team.create(
-    name: "SF"
-)
+# Team.create(
+#     name: "SF"
+# )
 
-Team.create(
-    name: "PHI"
-)
+# Team.create(
+#     name: "PHI"
+# )
 
 
 
