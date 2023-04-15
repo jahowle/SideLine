@@ -5,11 +5,13 @@ import { UserContext } from "../context/user";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const { handleLogin } = useContext(UserContext);
 
   const history = useHistory();
+
+  console.log("Errors", errors);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -43,25 +45,36 @@ function Login() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label for="username">Username</label>
+    <div className="flex flex-col items-center">
+      <h1 className="text-violet-200 text-2xl">Login</h1>
+      <form
+        className="flex flex-col items-center p-4 bg-gray-700 rounded-lg shadow-lg mt-8 mb-4"
+        onSubmit={handleSubmit}
+      >
+        <label className="mb-2" for="username">
+          Username
+        </label>
         <input
           name="username"
+          className="input input-primary w-full max-w-xs mb-4"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <label for="password">Password</label>
+        <label className="mb-2" for="password">
+          Password
+        </label>
         <input
           name="password"
-          type="text"
+          className="input input-primary w-full max-w-xs mb-4"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
-        {errors.length > 0 ? <p style={{ color: "red" }}>{errors}</p> : ""}
+        <button className="btn btn-primary btn-wide mb-4" type="submit">
+          Login
+        </button>
+        {errors.length > 0 && <p className="text-red-400">{errors}</p>}
       </form>
 
       <h3>Or login with Google</h3>

@@ -29,8 +29,8 @@ function Navbar() {
     );
   } else {
     return (
-      <div id="navbar">
-        <h2>Welcome, Guest</h2>
+      <div className="navbar bg-primary text-primary-content mb-4 flex flex-row items-center justify-center">
+        <h2 className="text-center">Sideline</h2>
       </div>
     );
   }
