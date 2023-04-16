@@ -25,15 +25,23 @@ function AddFunds() {
   }
 
   return (
-    <div>
-      <h2>Add Funds</h2>
-      <form onSubmit={handleAddFunds}>
+    <div className="flex flex-col items-center">
+      <form
+        className="flex flex-col items-center p-4 bg-gray-700 rounded-lg shadow-lg mt-8"
+        onSubmit={handleAddFunds}
+      >
+        <label className="mb-2" for="amount">
+          Amount
+        </label>
         <input
           type="number"
+          className="input input-bordered input-primary w-full max-w-xs mb-4"
           value={amount}
           onChange={(e) => setAmount(parseInt(e.target.value))}
         />
-        <button type="submit">Add Funds</button>
+        <button className="btn btn-primary btn-wide" type="submit">
+          Add Funds
+        </button>
       </form>
     </div>
   );

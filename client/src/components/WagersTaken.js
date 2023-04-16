@@ -26,7 +26,7 @@ function WagersTaken({ wagers, updateWagers, updateTaker }) {
       return null;
     }
   });
-  return <div className="flex flex-row flex-wrap w-3/4">{wagersTaken}</div>;
+  return <div className="flex flex-row flex-wrap w-9/12">{wagersTaken}</div>;
 }
 
 export default WagersTaken;

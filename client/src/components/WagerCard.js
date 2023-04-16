@@ -63,7 +63,7 @@ function WagerCard({
   function CancelButton() {
     if ((taker && taker.id === user.id) || maker.id === user.id) {
       return (
-        <button onClick={handleCancel} className="btn">
+        <button onClick={handleCancel} className="btn btn-ghost text-red-700">
           Cancel Wager
         </button>
       );
@@ -71,32 +71,37 @@ function WagerCard({
   }
 
   return (
-    <div className="box-border h-64 w-64 p-4 bg-slate-100 border-white border-2 ">
-      <h2>Maker: {maker.username}</h2>
-      <h2>Taker: {taker ? taker.username : "none"}</h2>
-      <h2>Status: {status}</h2>
-      <div className="flex">
-        <h3>
-          {homeTeam} vs {awayTeam}
-        </h3>
+    <div className="box-border h-64 w-64 p-4 bg-slate-100 m-4 rounded-md flex flex-col">
+      <div className="grow">
+        <div className="flex text-xl font-bold text-slate-700">
+          <h3>
+            {homeTeam} vs {awayTeam}
+          </h3>
+        </div>
+        <h2 className="text-slate-600">Maker: {maker.username}</h2>
+        <h2 className="text-slate-600">
+          Taker: {taker ? taker.username : "none"}
+        </h2>
+        <h2 className="text-slate-600">Status: {status}</h2>
       </div>
-      <div className="flex">
-        {pick === homeTeam ? (
-          <h4>
-            Take {awayTeam} for ${amount}
-          </h4>
-        ) : (
-          <h4>
-            Take {homeTeam} for ${amount}
-          </h4>
+      <div className="justify-end">
+        {taker ? null : (
+          <button onClick={handleClick} className="btn">
+            <h4 className="text-white">
+              {pick === homeTeam ? (
+                <h4>
+                  Take {awayTeam} for ${amount}
+                </h4>
+              ) : (
+                <h4>
+                  Take {homeTeam} for ${amount}
+                </h4>
+              )}
+            </h4>
+          </button>
         )}
+        {CancelButton()}
       </div>
-      {taker ? null : (
-        <button onClick={handleClick} className="btn">
-          <h4 className="text-white">Take Bet</h4>
-        </button>
-      )}
-      {CancelButton()}
     </div>
   );
 }
