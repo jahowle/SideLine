@@ -9,11 +9,13 @@ import Login from "./Login";
 import MyProfile from "./MyProfile";
 import CreateWager from "./CreateWager";
 import AddFunds from "./AddFunds";
+import Simulator from "./Simulator";
 
 function App() {
   const [wagers, setWagers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [games, setGames] = useState([]);
+  const [plays, setPlays] = useState([]);
 
   const { isLoggedIn, user } = useContext(UserContext);
 
@@ -31,6 +33,7 @@ function App() {
       if (r.ok) {
         r.json().then((games) => {
           setGames(games);
+          setPlays(games[0].plays);
           setIsLoaded(true);
         });
       } else {
@@ -70,6 +73,7 @@ function App() {
     return (
       <div className="App">
         <Navbar />
+        <Simulator plays={plays} />
 
         <Switch>
           <Route exact path="/login">
