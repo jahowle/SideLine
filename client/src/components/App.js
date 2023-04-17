@@ -34,6 +34,7 @@ function App() {
         r.json().then((games) => {
           setGames(games);
           setPlays(games[0].plays);
+          console.log("the plays", games[0].plays);
           setIsLoaded(true);
         });
       } else {
@@ -59,6 +60,48 @@ function App() {
     setWagers(updatedWagers);
   }
 
+  function handleWin(winnerId, wagerId) {
+    console.log("The winner id", winnerId);
+    console.log("The wager id", wagerId);
+    console.log(wagers);
+    // fetch(`/api/settle_wager/${wagerId}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ winner: winnerId, status: "finished" }),
+    // }).then((r) => {
+    //   if (r.ok) {
+    //     r.json().then((updatedWager) => {
+    //       console.log(updatedWager);
+    //     });
+    //   } else {
+    //     r.json().then((errorData) => console.log(errorData.errors));
+    //   }
+    // });
+  }
+
+  function updateWinner(winner) {
+    const updatedWagers = wagers.map((wager) => {
+      if (wager.pick === winner) {
+        handleWin(wager.maker_id, wager.id);
+        return {
+          ...wager,
+          status: "finished",
+          winner: wager.maker_id,
+        };
+      } else {
+        handleWin(wager.taker_id, wager.id);
+        return {
+          ...wager,
+          status: "finished",
+          winner: wager.taker_id,
+        };
+      }
+    });
+    setWagers(updatedWagers);
+  }
+
   function updateWagers(newWager) {
     console.log("The new wager", newWager);
     setWagers([...wagers, newWager]);
@@ -73,7 +116,12 @@ function App() {
     return (
       <div className="App">
         <Navbar />
-        <Simulator plays={plays} />
+        <Simulator
+          plays={plays}
+          isLoaded={isLoaded}
+          updateWinner={updateWinner}
+          game={games[0]}
+        />
 
         <Switch>
           <Route exact path="/login">

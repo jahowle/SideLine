@@ -18,6 +18,7 @@ function Home({ wagers, updateTaker, updateWagers, deleteWager }) {
         game={wager.game}
         updateWagers={updateWagers}
         deleteWager={deleteWager}
+        winner={wager.winner}
       />
     );
   });

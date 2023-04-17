@@ -44,10 +44,24 @@ class Api::WagersController < ApplicationController
         head :no_content
     end
 
+    def settle_wager
+        wager = Wager.find(params[:id])
+        wager.update!(
+            status: 4,
+            winner: params[:winner]
+            )
+        if wager.winner == wager.maker
+            wager.maker.update(balance: wager.maker.balance + wager.amount * 2)
+        elsif wager.winner == wager.taker
+            wager.taker.update(balance: wager.taker.balance + wager.amount * 2)
+        end
+        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+    end
+
 
     private
 
     def wager_params
-        params.permit(:taker_id, :status, :maker_id, :amount, :pick, :game_id)
+        params.permit(:taker_id, :status, :maker_id, :amount, :pick, :game_id, :winner)
     end
 end

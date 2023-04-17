@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/user";
 
 function WagerCard({
@@ -14,9 +14,21 @@ function WagerCard({
   id,
   deleteWager,
   game,
+  winner,
 }) {
   const { user, setUser } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
+  const [winnerName, setWinnerName] = useState("");
+
+  useEffect(() => {
+    if (winner) {
+      if (winner === maker.id) {
+        setWinnerName(maker.username);
+      } else {
+        setWinnerName(taker.username);
+      }
+    }
+  }, [winner]);
 
   function handleClick() {
     fetch(`/api/wagers/${id}`, {
@@ -82,7 +94,13 @@ function WagerCard({
         <h2 className="text-slate-600">
           Taker: {taker ? taker.username : "none"}
         </h2>
-        <h2 className="text-slate-600">Status: {status}</h2>
+        <h2 className="text-slate-600">
+          {status === "finished" ? (
+            <h2>Winner: {winnerName} </h2>
+          ) : (
+            <h2> Status: {status} </h2>
+          )}
+        </h2>
       </div>
       <div className="justify-end">
         {taker ? null : (
