@@ -9,12 +9,13 @@ class Api::WagersController < ApplicationController
 
     def update
         wager = Wager.find(params[:id])
+        new_balance = current_user.balance - wager.amount
         wager.assign_attributes(wager_params)
         if wager.amount > current_user.balance
             render json: { errors: ["You don't have enough money to take this wager"] }, status: :unprocessable_entity
         else
             wager.save!
-            current_user.update(balance: current_user.balance - wager.amount)
+            current_user.update(balance: new_balance)
             render json: wager, include: [:taker, :maker, :winner, :loser, :game]
         end
     end
@@ -27,6 +28,7 @@ class Api::WagersController < ApplicationController
     end
 
     def create
+        user = User.find(params[:maker_id])
         wager = Wager.create!(
             maker_id: params[:maker_id],
             amount: params[:amount],
@@ -34,7 +36,6 @@ class Api::WagersController < ApplicationController
             game_id: params[:game_id],
             status: 0
         )
-        wager.maker.update(balance: wager.maker.balance - wager.amount)
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
@@ -43,21 +44,6 @@ class Api::WagersController < ApplicationController
         wager.destroy
         head :no_content
     end
-
-    def settle_wager
-        wager = Wager.find(params[:id])
-        wager.update!(
-            status: 4,
-            winner: params[:winner]
-            )
-        if wager.winner == wager.maker
-            wager.maker.update(balance: wager.maker.balance + wager.amount * 2)
-        elsif wager.winner == wager.taker
-            wager.taker.update(balance: wager.taker.balance + wager.amount * 2)
-        end
-        render json: wager, include: [:taker, :maker, :winner, :loser, :game]
-    end
-
 
     private
 

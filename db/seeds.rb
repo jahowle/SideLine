@@ -95,7 +95,7 @@ sports_dataset()
 
 
 
-30.times do
+4.times do
 
     maker = User.pluck(:id).sample
     taker = [nil, User.pluck(:id).sample].sample

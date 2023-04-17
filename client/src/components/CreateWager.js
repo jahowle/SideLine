@@ -10,6 +10,8 @@ function CreateWager({ games, isLoaded, updateWagers }) {
   const [errors, setErrors] = useState([]);
   const history = useHistory();
 
+  console.log(pick);
+
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/api/wagers", {

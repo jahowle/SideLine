@@ -44,7 +44,7 @@ function WagerCard({
           setUser({ ...user, balance: user.balance - updatedWager.amount });
         });
       } else {
-        r.json().then((errorData) => console.log(errorData.errors));
+        r.json().then((errorData) => setErrors(errorData.errors));
       }
     });
   }
@@ -120,6 +120,13 @@ function WagerCard({
         )}
         {CancelButton()}
       </div>
+      {errors.length > 0 && (
+        <p style={{ color: "red" }}>
+          {errors.map((error) => (
+            <p key={error}>{error}</p>
+          ))}
+        </p>
+      )}
     </div>
   );
 }

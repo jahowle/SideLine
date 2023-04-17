@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     patch "/settle_wager/:id", to: "wagers#settle_wager"
     resources :wagers, only: [:create, :index, :show, :update, :destroy]
     resources :games, only: [:index, :show]
+    resources :users, only: [:update]
   end
 
   get "auth/:provider/callback", to: "sessions#omniauth"
