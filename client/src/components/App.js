@@ -83,6 +83,7 @@ function App() {
   }
 
   function updateWinner(winningTeam) {
+    debugger;
     const updatedWagers = wagers.map((wager) => {
       if (wager.pick === winningTeam) {
         handleWin(wager.maker_id, wager.id);

@@ -29,6 +29,8 @@ class Api::WagersController < ApplicationController
 
     def create
         user = User.find(params[:maker_id])
+        new_balance = user.balance - params[:amount].to_i
+        user.update(balance: new_balance)
         wager = Wager.create!(
             maker_id: params[:maker_id],
             amount: params[:amount],
@@ -36,10 +38,12 @@ class Api::WagersController < ApplicationController
             game_id: params[:game_id],
             status: 0
         )
+
         render json: wager, include: [:taker, :maker, :winner, :loser, :game]
     end
 
     def settle_wager
+        byebug
         wager = Wager.find(params[:id])
         
         if wager.game.away_score > wager.game.home_score
