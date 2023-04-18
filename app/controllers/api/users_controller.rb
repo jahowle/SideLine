@@ -5,7 +5,14 @@ class Api::UsersController < ApplicationController
     skip_before_action :authorize, only: [:create]
 
     def create
-        user = User.create(user_params)
+        user = User.create(
+            username: params[:username],
+            password: params[:password],
+            password_confirmation: params[:password_confirmation],
+            wins: 0,
+            losses: 0,
+            balance: 1000
+        )
         if user.valid?
             session[:user_id] = user.id
           render json: user, status: :created

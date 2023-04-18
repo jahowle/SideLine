@@ -17,13 +17,14 @@ function App() {
   const [games, setGames] = useState([]);
   const [plays, setPlays] = useState([]);
 
-  const { isLoggedIn, user } = useContext(UserContext);
+  const { isLoggedIn, user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
       if (r.ok) {
         r.json().then((wagers) => {
           setWagers(wagers);
+          console.log(wagers);
         });
       } else {
         console.log("error getting wagers");
@@ -64,26 +65,26 @@ function App() {
     console.log("The winner id", winnerId);
     console.log("The wager id", wagerId);
     console.log(wagers);
-    // fetch(`/api/settle_wager/${wagerId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ winner: winnerId, status: "finished" }),
-    // }).then((r) => {
-    //   if (r.ok) {
-    //     r.json().then((updatedWager) => {
-    //       console.log(updatedWager);
-    //     });
-    //   } else {
-    //     r.json().then((errorData) => console.log(errorData.errors));
-    //   }
-    // });
+    fetch(`/api/settle_wager/${wagerId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ winner: winnerId, status: "finished" }),
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((updatedWager) => {
+          console.log(updatedWager);
+        });
+      } else {
+        r.json().then((errorData) => console.log(errorData.errors));
+      }
+    });
   }
 
-  function updateWinner(winner) {
+  function updateWinner(winningTeam) {
     const updatedWagers = wagers.map((wager) => {
-      if (wager.pick === winner) {
+      if (wager.pick === winningTeam) {
         handleWin(wager.maker_id, wager.id);
         return {
           ...wager,

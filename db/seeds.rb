@@ -17,6 +17,7 @@ Wager.destroy_all
 Game.destroy_all
 Team.destroy_all
 Play.destroy_all
+User.destroy_all
 
 
 
