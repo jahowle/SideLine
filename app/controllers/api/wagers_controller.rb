@@ -43,7 +43,6 @@ class Api::WagersController < ApplicationController
     end
 
     def settle_wager
-        byebug
         wager = Wager.find(params[:id])
         
         if wager.game.away_score > wager.game.home_score
@@ -57,12 +56,14 @@ class Api::WagersController < ApplicationController
         if wager.pick == winning_team
             puts "Maker won"
             wager.update(status: 4, winner: wager.maker.id, loser: wager.taker.id)
-            wager.maker.update(wins: wager.maker.wins + 1)
+            wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
+            wager.taker.update(losses: wager.taker.losses + 1)
             puts "Maker wins: #{wager.maker.wins}"
         else
             puts "Taker won"
             wager.update(status: 4, winner: wager.taker.id, loser: wager.maker.id)
-            wager.taker.update(wins: wager.taker.wins + 1)
+            wager.taker.update(wins: wager.taker.wins + 1, balance: wager.taker.balance + wager.amount * 2)
+            wager.maker.update(losses: wager.maker.losses + 1)
             puts "Taker wins: #{wager.taker.wins}"
         end
     end
