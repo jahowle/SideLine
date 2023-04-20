@@ -83,6 +83,14 @@ function App() {
   }
 
   function updateWinner(winningTeam) {
+    // const expiredWagers = wagers.filter((wager) => {
+    //   if (wager.status === "taken") {
+    //     return wager;
+    //   } else {
+    //     return null;
+    //   }
+    // })
+
     const updatedWagers = wagers.map((wager) => {
       if (wager.pick === winningTeam) {
         handleWin(wager.maker_id, wager.id);

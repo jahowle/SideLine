@@ -5,6 +5,7 @@ import { Link, useRouteMatch, Route } from "react-router-dom";
 import WagersMade from "./WagersMade";
 import WagersTaken from "./WagersTaken";
 import AddFunds from "./AddFunds";
+import UserStats from "./UserStats";
 
 function MyProfile({ wagers, updateWagers, updateTaker, deleteWager }) {
   const { user } = useContext(UserContext);
@@ -12,6 +13,7 @@ function MyProfile({ wagers, updateWagers, updateTaker, deleteWager }) {
 
   return (
     <div className="mt-8 flex flex-col items-center">
+      <UserStats />
       <div className="flex flex-row">
         <Link to="/my-profile/add-funds">
           <button className="btn btn-primary mr-4">Add Funds</button>

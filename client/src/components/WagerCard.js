@@ -73,6 +73,9 @@ function WagerCard({
   }
 
   function CancelButton() {
+    if (status === "finished") {
+      return null;
+    }
     if ((taker && taker.id === user.id) || maker.id === user.id) {
       return (
         <button onClick={handleCancel} className="btn btn-ghost text-red-700">
