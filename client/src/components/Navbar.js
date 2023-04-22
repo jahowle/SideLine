@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../context/user";
 import LogoutButton from "./LogoutButton";
 import { Link } from "react-router-dom";
+import CreateWager from "./CreateWager";
 
-function Navbar() {
+function Navbar({ games, isLoaded, updateWagers }) {
   const { user, isLoggedIn, onLogout } = useContext(UserContext);
 
-  console.log(user.balance);
+  const [showModal, setShowModal] = useState(false);
 
   if (isLoggedIn) {
     return (
@@ -20,11 +21,18 @@ function Navbar() {
           <Link to="/my-profile">
             <button className="btn mx-4">My Pofile</button>
           </Link>
-          <Link to="/create-wager">
-            <button className="btn mx-4">Create Wager</button>
-          </Link>
+          <button onClick={() => setShowModal(true)} className="btn mx-4">
+            Create Wager
+          </button>
           <LogoutButton />
         </div>
+        <CreateWager
+          games={games}
+          isLoaded={isLoaded}
+          updateWagers={updateWagers}
+          setShowModal={setShowModal}
+          showModal={showModal}
+        />
       </div>
     );
   } else {

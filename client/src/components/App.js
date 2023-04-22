@@ -124,7 +124,7 @@ function App() {
   if (isLoggedIn) {
     return (
       <div className="App">
-        <Navbar />
+        <Navbar games={games} isLoaded={isLoaded} updateWagers={updateWagers} />
         <Simulator
           plays={plays}
           isLoaded={isLoaded}
