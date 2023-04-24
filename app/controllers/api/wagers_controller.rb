@@ -1,6 +1,7 @@
 class Api::WagersController < ApplicationController
 
     skip_before_action :authorize, only: [:index, :create]
+    before_action :require_permission, only: [:destroy]
 
     def index
         wagers = Wager.all 
@@ -75,6 +76,7 @@ class Api::WagersController < ApplicationController
     def destroy
         wager = Wager.find(params[:id])
         wager.destroy
+        wager.maker.update(balance: wager.maker.balance + wager.amount)
         head :no_content
     end
 
@@ -83,4 +85,10 @@ class Api::WagersController < ApplicationController
     def wager_params
         params.permit(:taker_id, :status, :maker_id, :amount, :pick, :game_id, :winner)
     end
+
+    def require_permission
+        if Wager.find(params[:id]).maker != current_user
+        render json: {error: "You don't have permission to do that"}
+        end
+    end 
 end
