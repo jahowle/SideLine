@@ -61,10 +61,12 @@ function App() {
     setWagers(updatedWagers);
   }
 
-  function handleWin(winnerId, wagerId) {
-    console.log(winnerId);
+  function handleWin(winnerId, wager) {
+    if (winnerId === user.id) {
+      setUser({ ...user, balance: user.balance + wager.amount * 2 });
+    }
 
-    fetch(`/api/settle_wager/${wagerId}`, {
+    fetch(`/api/settle_wager/${wager.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -92,14 +94,14 @@ function App() {
 
     const updatedWagers = wagers.map((wager) => {
       if (wager.pick === winningTeam) {
-        handleWin(wager.maker_id, wager.id);
+        handleWin(wager.maker_id, wager);
         return {
           ...wager,
           status: "finished",
           winner: wager.maker_id,
         };
       } else {
-        handleWin(wager.taker_id, wager.id);
+        handleWin(wager.taker_id, wager);
         return {
           ...wager,
           status: "finished",
