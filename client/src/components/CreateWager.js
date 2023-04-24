@@ -17,10 +17,9 @@ function CreateWager({
   const [errors, setErrors] = useState([]);
   const history = useHistory();
 
-  console.log(pick);
-
   function handleSubmit(e) {
     e.preventDefault();
+
     fetch("/api/wagers", {
       method: "POST",
       headers: {
@@ -37,7 +36,7 @@ function CreateWager({
         r.json().then((newWager) => {
           updateWagers(newWager);
           setUser({ ...user, balance: user.balance - amount });
-          history.push("/");
+          setShowModal(false);
         });
       } else {
         r.json().then((errorData) => setErrors(errorData.errors));

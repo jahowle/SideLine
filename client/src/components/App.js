@@ -62,9 +62,8 @@ function App() {
   }
 
   function handleWin(winnerId, wagerId) {
-    console.log("The winner id", winnerId);
-    console.log("The wager id", wagerId);
-    console.log(wagers);
+    console.log(winnerId);
+
     fetch(`/api/settle_wager/${wagerId}`, {
       method: "PATCH",
       headers: {

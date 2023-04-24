@@ -20,6 +20,8 @@ class Wager < ApplicationRecord
     def check_maker_balance
         if self.amount > self.maker.balance
             self.errors.add(:amount, "You don't have enough money to make this wager")
+        else
+            self.maker.update(balance: self.maker.balance - self.amount)
         end
     end
 
