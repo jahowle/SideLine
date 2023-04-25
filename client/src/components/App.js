@@ -61,9 +61,15 @@ function App() {
     setWagers(updatedWagers);
   }
 
-  function handleWin(winnerId, wager) {
+  function handleWin(winnerId, loserId, wager) {
     if (winnerId === user.id) {
-      setUser({ ...user, balance: user.balance + wager.amount * 2 });
+      setUser({
+        ...user,
+        balance: user.balance + wager.amount * 2,
+        wins: user.wins + 1,
+      });
+    } else if (loserId === user.id) {
+      setUser({ ...user, losses: user.losses + 1 });
     }
 
     fetch(`/api/settle_wager/${wager.id}`, {
@@ -94,14 +100,14 @@ function App() {
 
     const updatedWagers = wagers.map((wager) => {
       if (wager.pick === winningTeam) {
-        handleWin(wager.maker_id, wager);
+        handleWin(wager.maker_id, wager.taker_id, wager);
         return {
           ...wager,
           status: "finished",
           winner: wager.maker_id,
         };
       } else {
-        handleWin(wager.taker_id, wager);
+        handleWin(wager.taker_id, wager.maker_id, wager);
         return {
           ...wager,
           status: "finished",

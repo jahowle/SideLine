@@ -22,6 +22,7 @@ function WagersMade({ wagers, updateWagers, updateTaker, deleteWager }) {
           updateWagers={updateWagers}
           updateTaker={updateTaker}
           deleteWager={deleteWager}
+          winner={wager.winner}
         />
       );
     } else {

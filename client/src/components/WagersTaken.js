@@ -20,6 +20,7 @@ function WagersTaken({ wagers, updateWagers, updateTaker }) {
           game={wager.game}
           updateWagers={updateWagers}
           updateTaker={updateTaker}
+          winner={wager.winner}
         />
       );
     } else {
