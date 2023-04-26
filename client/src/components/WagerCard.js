@@ -68,7 +68,7 @@ function WagerCard({
         method: "DELETE",
       });
       setUser({ ...user, balance: user.balance + amount });
-      deleteWager(id);
+      deleteWager(id, status);
     }
   }
 

@@ -5,9 +5,6 @@ function Simulator({ plays, isLoaded, updateWinner, game }) {
   const [simulate, setSimulate] = useState(false);
   const [halt, setHalt] = useState(false);
 
-  console.log("loaded?", isLoaded);
-  console.log("the plays in simulator", plays[0]);
-
   function handleClick() {
     setSimulate(!simulate);
   }

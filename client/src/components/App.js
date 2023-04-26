@@ -15,6 +15,10 @@ function App() {
   const [wagers, setWagers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [games, setGames] = useState([]);
+  const [openWagers, setOpenWagers] = useState([]);
+  const [takenWagers, setTakenWagers] = useState([]);
+  const [expiredWagers, setExpiredWagers] = useState([]);
+  const [finishedWagers, setFinishedWagers] = useState([]);
   const [plays, setPlays] = useState([]);
 
   const { isLoggedIn, user, setUser } = useContext(UserContext);
@@ -23,7 +27,7 @@ function App() {
     fetch("/api/wagers").then((r) => {
       if (r.ok) {
         r.json().then((wagers) => {
-          setWagers(wagers);
+          sortWagers(wagers);
         });
       } else {
         console.log("error getting wagers");
@@ -35,7 +39,6 @@ function App() {
           setGames(games);
           // setPlays(games[0].plays);
           // console.log("the plays", games[0].plays);
-          console.log("the games", games);
           setIsLoaded(true);
         });
       } else {
@@ -43,6 +46,46 @@ function App() {
       }
     });
   }, []);
+
+  function sortWagers(wagers) {
+    const openWagers = wagers.filter((wager) => {
+      if (wager.status === "open") {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+    const takenWagers = wagers.filter((wager) => {
+      if (wager.status === "taken") {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+    const expiredWagers = wagers.filter((wager) => {
+      if (wager.status === "expired") {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+    const finishedWagers = wagers.filter((wager) => {
+      if (wager.status === "finished") {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+    setOpenWagers(openWagers);
+    setTakenWagers(takenWagers);
+    setExpiredWagers(expiredWagers);
+    setFinishedWagers(finishedWagers);
+
+    console.log("open wagers", openWagers);
+    console.log("taken wagers", takenWagers);
+    console.log("expired wagers", expiredWagers);
+    console.log("finished wagers", finishedWagers);
+  }
 
   function updateTaker(updatedWager) {
     console.log("The updated wager", updatedWager);
@@ -120,12 +163,31 @@ function App() {
 
   function updateWagers(newWager) {
     console.log("The new wager", newWager);
-    setWagers([...wagers, newWager]);
+    if (newWager.status === "open") {
+      setOpenWagers([...openWagers, newWager]);
+    } else if (newWager.status === "taken") {
+      setTakenWagers([...takenWagers, newWager]);
+    } else if (newWager.status === "expired") {
+      setExpiredWagers([...expiredWagers, newWager]);
+    } else if (newWager.status === "finished") {
+      setFinishedWagers([...finishedWagers, newWager]);
+    }
   }
 
-  function deleteWager(id) {
-    const updatedWagers = wagers.filter((wager) => wager.id !== id);
-    setWagers(updatedWagers);
+  function deleteWager(id, status) {
+    if (status === "open") {
+      const updatedWagers = openWagers.filter((wager) => wager.id !== id);
+      setOpenWagers(updatedWagers);
+    } else if (status === "taken") {
+      const updatedWagers = takenWagers.filter((wager) => wager.id !== id);
+      setTakenWagers(updatedWagers);
+    } else if (status === "expired") {
+      const updatedWagers = expiredWagers.filter((wager) => wager.id !== id);
+      setExpiredWagers(updatedWagers);
+    } else if (status === "finished") {
+      const updatedWagers = finishedWagers.filter((wager) => wager.id !== id);
+      setFinishedWagers(updatedWagers);
+    }
   }
 
   if (isLoggedIn) {
@@ -168,7 +230,10 @@ function App() {
           <Route exact path="/">
             {isLoaded ? (
               <Home
-                wagers={wagers}
+                openWagers={openWagers}
+                takenWagers={takenWagers}
+                expiredWagers={expiredWagers}
+                finishedWagers={finishedWagers}
                 updateTaker={updateTaker}
                 deleteWager={deleteWager}
                 updateWagers={updateWagers}
