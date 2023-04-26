@@ -7,7 +7,15 @@ import WagersTaken from "./WagersTaken";
 import AddFunds from "./AddFunds";
 import UserStats from "./UserStats";
 
-function MyProfile({ wagers, updateWagers, updateTaker, deleteWager }) {
+function MyProfile({
+  openWagers,
+  takenWagers,
+  expiredWagers,
+  finishedWagers,
+  updateWagers,
+  updateTaker,
+  deleteWager,
+}) {
   const { user } = useContext(UserContext);
   const match = useRouteMatch();
 
@@ -30,14 +38,23 @@ function MyProfile({ wagers, updateWagers, updateTaker, deleteWager }) {
       <div className="flex flex-col items-center">
         <Route path="/my-profile/wagers-made">
           <WagersMade
-            wagers={wagers}
+            openWagers={openWagers}
+            takenWagers={takenWagers}
+            expiredWagers={expiredWagers}
+            finishedWagers={finishedWagers}
             updateWagers={updateWagers}
             updateTaker={updateTaker}
             deleteWager={deleteWager}
           />
         </Route>
         <Route path="/my-profile/wagers-taken">
-          <WagersTaken wagers={wagers} updateTaker={updateTaker} />
+          <WagersTaken
+            openWagers={openWagers}
+            takenWagers={takenWagers}
+            expiredWagers={expiredWagers}
+            finishedWagers={finishedWagers}
+            updateTaker={updateTaker}
+          />
         </Route>
         <Route path="/my-profile/add-funds">
           <AddFunds />

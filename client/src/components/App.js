@@ -208,7 +208,10 @@ function App() {
 
           <Route path="/my-profile">
             <MyProfile
-              wagers={wagers}
+              openWagers={openWagers}
+              takenWagers={takenWagers}
+              expiredWagers={expiredWagers}
+              finishedWagers={finishedWagers}
               deleteWager={deleteWager}
               updateWagers={updateWagers}
               updateTaker={updateTaker}
