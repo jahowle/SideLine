@@ -93,6 +93,7 @@ function CreateWager({
             className="select select-primary w-full max-w-xs mb-4"
             onChange={handlePickSelect}
           >
+            <option value="none" selected disabled hidden></option>
             <option>{selectedGame.home_team}</option>
             <option>{selectedGame.away_team}</option>
           </select>
