@@ -24,7 +24,6 @@ function App() {
       if (r.ok) {
         r.json().then((wagers) => {
           setWagers(wagers);
-          console.log(wagers);
         });
       } else {
         console.log("error getting wagers");
@@ -34,8 +33,9 @@ function App() {
       if (r.ok) {
         r.json().then((games) => {
           setGames(games);
-          setPlays(games[0].plays);
-          console.log("the plays", games[0].plays);
+          // setPlays(games[0].plays);
+          // console.log("the plays", games[0].plays);
+          console.log("the games", games);
           setIsLoaded(true);
         });
       } else {

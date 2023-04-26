@@ -23,50 +23,70 @@ User.destroy_all
 
 def sports_dataset
     api_data = { key: sports_data_key}
-    data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/0?key=#{api_data[:key]}")
-    data_array = JSON.parse(data)[0]["Score"]
+    data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/BoxScoresDeltaV3/2022/8/all/1?key=#{api_data[:key]}")
+    data_array = JSON.parse(data)
 
-    play_number=0
-
-    game = Game.create(
-        home_team: data_array["HomeTeam"],
-        away_team: data_array["AwayTeam"],
-        quarter: data_array["Quarter"].to_i,
-        away_score: data_array["AwayScore"].to_i,
-        home_score: data_array["HomeScore"].to_i,
-        has_started: data_array["HasStarted"],
-        is_in_progress: data_array["IsInProgress"],
-        is_over: data_array["IsOver"],
-        game_key: data_array["GameKey"].to_i
-    )
-
-    Team.create(
-        name: data_array["HomeTeam"]
-    )
-
-    Team.create(
-        name: data_array["AwayTeam"]
-    )
-
-   while play_number < 200
-
-
-        data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/#{play_number}?key=#{api_data[:key]}")
-        data_array = JSON.parse(data)[0]["Score"]
-    
-        Play.create(
-            play_number: play_number,
-            game_id: game.id,
-            away_score: data_array["AwayScore"].to_i,
-            home_score: data_array["HomeScore"].to_i,
-            down: data_array["Down"],
-            quarter: data_array["Quarter"]
-
+    data_array.each do |game|
+        Game.create(
+            home_team: game["Score"]["HomeTeam"],
+            away_team: game["Score"]["AwayTeam"],
+            home_score: game["Score"]["HomeScore"].to_i,
+            away_score: game["Score"]["AwayScore"].to_i,
+            is_over: false
         )
 
-        play_number += 10
+        Team.create(
+            name: game["Score"]["HomeTeam"]
+        )
 
-   end
+        Team.create(
+            name: game["Score"]["AwayTeam"]
+        )
+    
+    end
+
+
+#     play_number=0
+
+#     game = Game.create(
+#         home_team: data_array["HomeTeam"],
+#         away_team: data_array["AwayTeam"],
+#         quarter: data_array["Quarter"].to_i,
+#         away_score: data_array["AwayScore"].to_i,
+#         home_score: data_array["HomeScore"].to_i,
+#         has_started: data_array["HasStarted"],
+#         is_in_progress: data_array["IsInProgress"],
+#         is_over: data_array["IsOver"],
+#         game_key: data_array["GameKey"].to_i
+#     )
+
+#     Team.create(
+#         name: data_array["HomeTeam"]
+#     )
+
+#     Team.create(
+#         name: data_array["AwayTeam"]
+#     )
+
+#    while play_number < 200
+
+
+#         data = RestClient.get("https://api.sportsdata.io/v3/nfl/stats/json/SimulatedBoxScoresV3/#{play_number}?key=#{api_data[:key]}")
+#         data_array = JSON.parse(data)[0]["Score"]
+    
+#         Play.create(
+#             play_number: play_number,
+#             game_id: game.id,
+#             away_score: data_array["AwayScore"].to_i,
+#             home_score: data_array["HomeScore"].to_i,
+#             down: data_array["Down"],
+#             quarter: data_array["Quarter"]
+
+#         )
+
+#         play_number += 10
+
+#    end
 
         
 
@@ -96,28 +116,28 @@ sports_dataset()
 
 
 
-4.times do
+# 4.times do
 
-    maker = User.pluck(:id).sample
-    taker = [nil, User.pluck(:id).sample].sample
-    game = Game.all.sample
+#     maker = User.pluck(:id).sample
+#     taker = [nil, User.pluck(:id).sample].sample
+#     game = Game.all.sample
 
 
     
-    wager = Wager.new(
-      amount: rand(500),
-      maker_id: maker,
-      taker_id: taker,
-      game_id: game.id,
-      pick: [game.away_team, game.home_team].sample,
-      status: taker ? 1 : 0
-    )
+#     wager = Wager.new(
+#       amount: rand(500),
+#       maker_id: maker,
+#       taker_id: taker,
+#       game_id: game.id,
+#       pick: [game.away_team, game.home_team].sample,
+#       status: taker ? 1 : 0
+#     )
 
-    wager.flag = true
+#     wager.flag = true
 
-    wager.save
+#     wager.save
 
 
-  end
+#   end
 
 puts "✅ Done seeding!"
