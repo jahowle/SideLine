@@ -198,7 +198,7 @@ function App() {
           plays={plays}
           isLoaded={isLoaded}
           updateWinner={updateWinner}
-          game={games[0]}
+          games={games}
         />
 
         <Switch>

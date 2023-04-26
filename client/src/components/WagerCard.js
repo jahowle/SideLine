@@ -85,53 +85,86 @@ function WagerCard({
     }
   }
 
-  return (
-    <div className="box-border h-64 w-64 p-4 bg-slate-100 m-4 rounded-md flex flex-col">
-      <div className="grow">
-        <div className="flex text-xl font-bold text-slate-700">
-          <h3>
-            {homeTeam} vs {awayTeam}
-          </h3>
+  if (maker.id === user.id || (taker && taker.id === user.id)) {
+    return (
+      <div className="box-border h-64 w-64 p-4 bg-slate-100 m-4 rounded-md flex flex-col border-2 border-green-200">
+        <div className="grow">
+          <div className="flex text-xl font-bold text-slate-700">
+            <h3>
+              {homeTeam} vs {awayTeam}
+            </h3>
+          </div>
+          <h2 className="text-slate-600">Maker: {maker.username}</h2>
+          <h2 className="text-slate-600">
+            Taker: {taker ? taker.username : "none"}
+          </h2>
+          <h2 className="text-slate-600">
+            {status === "finished" ? (
+              <h2>Winner: {winnerName} </h2>
+            ) : (
+              <h2> Status: {status} </h2>
+            )}
+          </h2>
         </div>
-        <h2 className="text-slate-600">Maker: {maker.username}</h2>
-        <h2 className="text-slate-600">
-          Taker: {taker ? taker.username : "none"}
-        </h2>
-        <h2 className="text-slate-600">
-          {status === "finished" ? (
-            <h2>Winner: {winnerName} </h2>
-          ) : (
-            <h2> Status: {status} </h2>
-          )}
-        </h2>
-      </div>
-      <div className="justify-end">
-        {taker ? null : (
-          <button onClick={handleClick} className="btn">
-            <h4 className="text-white">
-              {pick === homeTeam ? (
-                <h4>
-                  Take {awayTeam} for ${amount}
-                </h4>
-              ) : (
-                <h4>
-                  Take {homeTeam} for ${amount}
-                </h4>
-              )}
-            </h4>
-          </button>
+        <div className="justify-end">{CancelButton()}</div>
+        {errors.length > 0 && (
+          <p style={{ color: "red" }}>
+            {errors.map((error) => (
+              <p key={error}>{error}</p>
+            ))}
+          </p>
         )}
-        {CancelButton()}
       </div>
-      {errors.length > 0 && (
-        <p style={{ color: "red" }}>
-          {errors.map((error) => (
-            <p key={error}>{error}</p>
-          ))}
-        </p>
-      )}
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="box-border h-64 w-64 p-4 bg-slate-100 m-4 rounded-md flex flex-col ">
+        <div className="grow">
+          <div className="flex text-xl font-bold text-slate-700">
+            <h3>
+              {homeTeam} vs {awayTeam}
+            </h3>
+          </div>
+          <h2 className="text-slate-600">Maker: {maker.username}</h2>
+          <h2 className="text-slate-600">
+            Taker: {taker ? taker.username : "none"}
+          </h2>
+          <h2 className="text-slate-600">
+            {status === "finished" ? (
+              <h2>Winner: {winnerName} </h2>
+            ) : (
+              <h2> Status: {status} </h2>
+            )}
+          </h2>
+        </div>
+        <div className="justify-end">
+          {taker ? null : (
+            <button onClick={handleClick} className="btn">
+              <h4 className="text-white">
+                {pick === homeTeam ? (
+                  <h4>
+                    Take {awayTeam} for ${amount}
+                  </h4>
+                ) : (
+                  <h4>
+                    Take {homeTeam} for ${amount}
+                  </h4>
+                )}
+              </h4>
+            </button>
+          )}
+          {CancelButton()}
+        </div>
+        {errors.length > 0 && (
+          <p style={{ color: "red" }}>
+            {errors.map((error) => (
+              <p key={error}>{error}</p>
+            ))}
+          </p>
+        )}
+      </div>
+    );
+  }
 }
 
 export default WagerCard;

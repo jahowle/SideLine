@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SimulatedPlay from "./SimulatedPlay";
 
-function Simulator({ plays, isLoaded, updateWinner, game }) {
+function Simulator({ plays, isLoaded, updateWinner, games }) {
   const [simulate, setSimulate] = useState(false);
   const [halt, setHalt] = useState(false);
 
@@ -23,7 +23,7 @@ function Simulator({ plays, isLoaded, updateWinner, game }) {
             <SimulatedPlay
               plays={plays}
               updateWinner={updateWinner}
-              game={game}
+              games={games}
               updateHalt={updateHalt}
               halt={halt}
             />
