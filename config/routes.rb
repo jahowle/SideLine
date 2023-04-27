@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     patch "/cancel_take_wager/:id", to: "wagers#cancel_take_wager"
     patch "/settle_wager/:id", to: "wagers#settle_wager"
     resources :wagers, only: [:create, :index, :show, :update, :destroy]
-    resources :games, only: [:index, :show]
+    resources :games, only: [:index, :show, :create, :update]
     resources :users, only: [:update]
   end
 

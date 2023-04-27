@@ -5,12 +5,31 @@ function SimulatedPlay({ plays, updateWinner, games, updateHalt, halt }) {
   const [i, setI] = useState(0);
   const [gameState, setGameState] = useState("pre-game");
 
+  useEffect(() => {
+    games.forEach((game) => {
+      fetch(`/api/games/${game.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_over: true }),
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((updatedGame) => {
+            console.log(updatedGame);
+          });
+        } else {
+          r.json().then((errorData) => console.log(errorData.errors));
+        }
+      });
+    });
+  }, []);
+
   const gamesToDisplay = games.map((game) => {
     return (
       <div id={game.id} className="p-2 bg-violet-900 rounded m-2">
         <h1>
-          {game.away_team} {game.away_score} - {game.home_team}{" "}
-          {game.home_score}
+          {game.away_team} vs {game.home_team}
         </h1>
       </div>
     );
