@@ -23,18 +23,33 @@ class Api::GamesController < ApplicationController
                 game_loser = game.home_team
             end
 
-            Wager.where(game_id: game.id).each do |wager|
-                if wager.pick == game_winner
-                    puts "Maker won"
-                    wager.update(status: 4, winner: wager.maker.id, loser: wager.taker.id)
-                    wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
-                    wager.taker.update(losses: wager.taker.losses + 1)
-                else
-                    puts "Taker won"
-                    wager.update(status: 4, winner: wager.taker.id, loser: wager.maker.id)
-                    wager.taker.update(wins: wager.taker.wins + 1, balance: wager.taker.balance + wager.amount * 2)
-                    wager.maker.update(losses: wager.maker.losses + 1)
+            if Wager.where(game_id: game.id).length > 0
+                puts "*****Wagers exist**********"
+                
+                wagers = Wager.where(game_id: game.id)
+
+                wagers.each do |wager|
+                    if wager.status == "taken"
+                        if wager.pick == game_winner
+                            puts "Maker won"
+                            wager.update(status: "finished", winner: wager.maker.id, loser: wager.taker.id)
+                            wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
+                            wager.taker.update(losses: wager.taker.losses + 1)
+                        else
+                            puts "Taker won"
+                            wager.update(status: "finished", winner: wager.taker.id, loser: wager.maker.id)
+                            wager.taker.update(wins: wager.taker.wins + 1, balance: wager.taker.balance + wager.amount * 2)
+                            wager.maker.update(losses: wager.maker.losses + 1)
+                        end
+                    elsif wager.status == "open"
+                        puts "Wager cancelled"
+                        wager.update(status: "expired")
+                        wager.maker.update(balance: wager.maker.balance + wager.amount)
+                    else
+                        puts "Wager already resolved"
+                    end
                 end
+
             end
         end
 

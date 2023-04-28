@@ -16,7 +16,7 @@ function SimulatedPlay({ plays, updateWinner, games, updateHalt, halt }) {
       }).then((r) => {
         if (r.ok) {
           r.json().then((updatedGame) => {
-            console.log(updatedGame);
+            updateWinner(updatedGame);
           });
         } else {
           r.json().then((errorData) => console.log(errorData.errors));

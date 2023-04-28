@@ -132,33 +132,27 @@ function App() {
     });
   }
 
-  function updateWinner(winningTeam) {
-    // const expiredWagers = wagers.filter((wager) => {
-    //   if (wager.status === "taken") {
-    //     return wager;
-    //   } else {
-    //     return null;
-    //   }
-    // })
+  function updateWinner(finishedGame) {
+    console.log("The finished game", finishedGame);
 
-    const updatedWagers = wagers.map((wager) => {
-      if (wager.pick === winningTeam) {
-        handleWin(wager.maker_id, wager.taker_id, wager);
-        return {
-          ...wager,
-          status: "finished",
-          winner: wager.maker_id,
-        };
-      } else {
-        handleWin(wager.taker_id, wager.maker_id, wager);
-        return {
-          ...wager,
-          status: "finished",
-          winner: wager.taker_id,
-        };
-      }
-    });
-    setWagers(updatedWagers);
+    // const updatedWagers = wagers.map((wager) => {
+    //   if (wager.pick === winningTeam) {
+    //     handleWin(wager.maker_id, wager.taker_id, wager);
+    //     return {
+    //       ...wager,
+    //       status: "finished",
+    //       winner: wager.maker_id,
+    //     };
+    //   } else {
+    //     handleWin(wager.taker_id, wager.maker_id, wager);
+    //     return {
+    //       ...wager,
+    //       status: "finished",
+    //       winner: wager.taker_id,
+    //     };
+    //   }
+    // });
+    // setWagers(updatedWagers);
   }
 
   function updateWagers(newWager) {
