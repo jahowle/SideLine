@@ -73,7 +73,7 @@ function WagerCard({
   }
 
   function CancelButton() {
-    if (status === "finished") {
+    if (status === "finished" || status === "expired") {
       return null;
     }
     if ((taker && taker.id === user.id) || maker.id === user.id) {
@@ -138,7 +138,7 @@ function WagerCard({
           </h2>
         </div>
         <div className="justify-end">
-          {taker ? null : (
+          {taker || status === "expired" ? null : (
             <button onClick={handleClick} className="btn">
               <h4 className="text-white">
                 {pick === homeTeam ? (

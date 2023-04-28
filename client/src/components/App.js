@@ -12,16 +12,14 @@ import AddFunds from "./AddFunds";
 import Simulator from "./Simulator";
 
 function App() {
-  const [wagers, setWagers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [games, setGames] = useState([]);
   const [openWagers, setOpenWagers] = useState([]);
   const [takenWagers, setTakenWagers] = useState([]);
   const [expiredWagers, setExpiredWagers] = useState([]);
   const [finishedWagers, setFinishedWagers] = useState([]);
-  const [plays, setPlays] = useState([]);
 
-  const { isLoggedIn, user, setUser } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
@@ -37,8 +35,6 @@ function App() {
       if (r.ok) {
         r.json().then((games) => {
           setGames(games);
-          // setPlays(games[0].plays);
-          // console.log("the plays", games[0].plays);
           setIsLoaded(true);
         });
       } else {
@@ -80,16 +76,12 @@ function App() {
     setTakenWagers(takenWagers);
     setExpiredWagers(expiredWagers);
     setFinishedWagers(finishedWagers);
-
-    console.log("open wagers", openWagers);
-    console.log("taken wagers", takenWagers);
-    console.log("expired wagers", expiredWagers);
-    console.log("finished wagers", finishedWagers);
   }
 
   function updateTaker(updatedWager) {
     console.log("The updated wager", updatedWager);
-    const updatedWagers = wagers.map((wager) => {
+
+    const updatedTakenWagers = openWagers.map((wager) => {
       if (wager.id === updatedWager.id) {
         return {
           ...wager,
@@ -101,35 +93,18 @@ function App() {
         return wager;
       }
     });
-    setWagers(updatedWagers);
-  }
 
-  function handleWin(winnerId, loserId, wager) {
-    if (winnerId === user.id) {
-      setUser({
-        ...user,
-        balance: user.balance + wager.amount * 2,
-        wins: user.wins + 1,
-      });
-    } else if (loserId === user.id) {
-      setUser({ ...user, losses: user.losses + 1 });
-    }
-
-    fetch(`/api/settle_wager/${wager.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ winner: winnerId, status: "finished" }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((updatedWager) => {
-          console.log(updatedWager);
-        });
+    const updatedOpenWagers = openWagers.filter((wager) => {
+      if (wager.id !== updatedWager.id) {
+        return wager;
       } else {
-        r.json().then((errorData) => console.log(errorData.errors));
+        return null;
       }
     });
+
+    setOpenWagers(updatedOpenWagers);
+
+    setTakenWagers(updatedTakenWagers);
   }
 
   function updateWinner(finishedGame) {
@@ -189,7 +164,6 @@ function App() {
       <div className="App">
         <Navbar games={games} isLoaded={isLoaded} updateWagers={updateWagers} />
         <Simulator
-          plays={plays}
           isLoaded={isLoaded}
           updateWinner={updateWinner}
           games={games}

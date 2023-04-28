@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-function SimulatedPlay({ plays, updateWinner, games, updateHalt, halt }) {
-  const [play, setPlay] = useState({});
-  const [i, setI] = useState(0);
-  const [gameState, setGameState] = useState("pre-game");
-
+function SimulatedPlay({ updateWinner, games }) {
   useEffect(() => {
     games.forEach((game) => {
       fetch(`/api/games/${game.id}`, {
