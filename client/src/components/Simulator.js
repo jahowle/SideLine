@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from "react";
-import SimulatedPlay from "./SimulatedPlay";
 
-function Simulator({ plays, isLoaded, updateWinner, games }) {
+function Simulator({
+  isLoaded,
+  openWagers,
+  takenWagers,
+  games,
+  addToFinishedWagers,
+}) {
   const [simulate, setSimulate] = useState(false);
-  const [halt, setHalt] = useState(false);
 
   function handleClick() {
     setSimulate(!simulate);
   }
 
-  function updateHalt(halt) {
-    setHalt(halt);
+  function handleSimulate() {
+    const wagersToSettle = openWagers.concat(takenWagers);
+    wagersToSettle.forEach((wager) => {
+      if (wager.status === "open") {
+        fetch(`/api/settle_wager/${wager.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "expired" }),
+        })
+          .then((r) => r.json())
+          .then((updatedWager) => {
+            console.log(updatedWager);
+          });
+      } else if (wager.status === "taken") {
+        fetch(`/api/settle_wager/${wager.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "finished" }),
+        })
+          .then((r) => r.json())
+          .then((updatedWager) => {
+            addToFinishedWagers(updatedWager);
+          });
+      }
+    });
   }
 
   if (!isLoaded) {
@@ -18,19 +49,16 @@ function Simulator({ plays, isLoaded, updateWinner, games }) {
   } else {
     return (
       <div className="w-100% flex flex-col items-center bg-slate-950">
-        {simulate && !halt ? (
+        {simulate ? (
           <div className="flex flex-row items-center py-6">
-            <SimulatedPlay
-              plays={plays}
-              updateWinner={updateWinner}
-              games={games}
-              updateHalt={updateHalt}
-              halt={halt}
-            />
+            <h1>Simulating</h1>
+            <button className="btn btn-primary my-4" onClick={handleClick}>
+              Reset
+            </button>
           </div>
         ) : (
-          <button className="btn btn-primary my-4" onClick={handleClick}>
-            Simulate Game
+          <button className="btn btn-primary my-4" onClick={handleSimulate}>
+            Simulate Games
           </button>
         )}
       </div>

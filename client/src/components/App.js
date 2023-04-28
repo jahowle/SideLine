@@ -19,7 +19,9 @@ function App() {
   const [expiredWagers, setExpiredWagers] = useState([]);
   const [finishedWagers, setFinishedWagers] = useState([]);
 
-  const { isLoggedIn } = useContext(UserContext);
+  const [simState, setSimState] = useState(false);
+
+  const { isLoggedIn, setUser } = useContext(UserContext);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
@@ -41,7 +43,7 @@ function App() {
         console.log("error getting games");
       }
     });
-  }, []);
+  }, [simState]);
 
   function sortWagers(wagers) {
     const openWagers = wagers.filter((wager) => {
@@ -78,84 +80,12 @@ function App() {
     setFinishedWagers(finishedWagers);
   }
 
-  function updateTaker(updatedWager) {
-    console.log("The updated wager", updatedWager);
-
-    if (updatedWager.status === "taken") {
-      console.log("adding a taker to the wager");
-      const updatedTakenWagers = openWagers.map((wager) => {
-        if (wager.id === updatedWager.id) {
-          return {
-            ...wager,
-            taker_id: updatedWager.taker_id,
-            taker: updatedWager.taker,
-            status: updatedWager.status,
-          };
-        } else {
-          return wager;
-        }
-      });
-
-      const updatedOpenWagers = openWagers.filter((wager) => {
-        if (wager.id !== updatedWager.id) {
-          return wager;
-        } else {
-          return null;
-        }
-      });
-
-      setOpenWagers(updatedOpenWagers);
-
-      setTakenWagers(updatedTakenWagers);
-    } else if (updatedWager.status === "open") {
-      console.log("removing a taker from the wager");
-      const updatedOpenWagers = takenWagers.map((wager) => {
-        if (wager.id === updatedWager.id) {
-          return {
-            ...wager,
-            taker_id: null,
-            taker: null,
-            status: updatedWager.status,
-          };
-        } else {
-          return wager;
-        }
-      });
-
-      const updatedTakenWagers = takenWagers.filter((wager) => {
-        if (wager.id !== updatedWager.id) {
-          return wager;
-        } else {
-          return null;
-        }
-      });
-
-      setTakenWagers(updatedTakenWagers);
-      setOpenWagers(updatedOpenWagers);
-    }
-  }
-
-  function updateWinner(finishedGame) {
-    console.log("The finished game", finishedGame);
-
-    // const updatedWagers = wagers.map((wager) => {
-    //   if (wager.pick === winningTeam) {
-    //     handleWin(wager.maker_id, wager.taker_id, wager);
-    //     return {
-    //       ...wager,
-    //       status: "finished",
-    //       winner: wager.maker_id,
-    //     };
-    //   } else {
-    //     handleWin(wager.taker_id, wager.maker_id, wager);
-    //     return {
-    //       ...wager,
-    //       status: "finished",
-    //       winner: wager.taker_id,
-    //     };
-    //   }
-    // });
-    // setWagers(updatedWagers);
+  function addTaker(updatedWager) {
+    setTakenWagers([...takenWagers, updatedWager]);
+    const updatedOpenWagers = openWagers.filter(
+      (wager) => wager.id !== updatedWager.id
+    );
+    setOpenWagers(updatedOpenWagers);
   }
 
   function updateWagers(newWager) {
@@ -187,13 +117,29 @@ function App() {
     }
   }
 
+  function addToFinishedWagers(wager) {
+    setFinishedWagers([...finishedWagers, wager]);
+
+    const updatedTakenWagers = takenWagers.filter((wager) => {
+      if (wager.id !== wager.id) {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+
+    setTakenWagers(updatedTakenWagers);
+  }
+
   if (isLoggedIn) {
     return (
       <div className="App">
         <Navbar games={games} isLoaded={isLoaded} updateWagers={updateWagers} />
         <Simulator
           isLoaded={isLoaded}
-          updateWinner={updateWinner}
+          openWagers={openWagers}
+          takenWagers={takenWagers}
+          addToFinishedWagers={addToFinishedWagers}
           games={games}
         />
 
@@ -210,7 +156,6 @@ function App() {
               finishedWagers={finishedWagers}
               deleteWager={deleteWager}
               updateWagers={updateWagers}
-              updateTaker={updateTaker}
             />
           </Route>
 
@@ -233,9 +178,9 @@ function App() {
                 takenWagers={takenWagers}
                 expiredWagers={expiredWagers}
                 finishedWagers={finishedWagers}
-                updateTaker={updateTaker}
                 deleteWager={deleteWager}
                 updateWagers={updateWagers}
+                addTaker={addTaker}
               />
             ) : (
               <h2>Loading...</h2>

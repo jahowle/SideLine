@@ -44,33 +44,18 @@ class Api::WagersController < ApplicationController
 
     def settle_wager
         wager = Wager.find(params[:id])
+
+        game_winner = wager.game.home_score > wager.game.away_score ? wager.game.home_team : wager.game.away_team
+
+        if wager.status == "open"
+            wager.update(status: "expired")
+            render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+        else
+            wager.update(status: "finished")
+           
+            render json: wager, include: [:taker, :maker, :winner, :loser, :game]
+        end
         
-        if wager.game.away_score > wager.game.home_score
-            winning_team = wager.game.away_team
-            losing_team = wager.game.home_team
-        else
-            winning_team = wager.game.home_team
-            losing_team = wager.game.away_team
-        end
-
-        if wager.pick == winning_team
-            puts "Maker won"
-            wager.update(status: 4, winner: wager.maker.id, loser: wager.taker.id)
-            wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
-            wager.taker.update(losses: wager.taker.losses + 1)
-            puts "Maker wins: #{wager.maker.wins}"
-
-            render json: wager
-        else
-            puts "Taker won"
-            wager.update(status: 4, winner: wager.taker.id, loser: wager.maker.id)
-            wager.taker.update(wins: wager.taker.wins + 1, balance: wager.taker.balance + wager.amount * 2)
-            wager.maker.update(losses: wager.maker.losses + 1)
-            puts "Taker wins: #{wager.taker.wins}"
-
-            render json: wager
-
-        end
     end
 
     def destroy

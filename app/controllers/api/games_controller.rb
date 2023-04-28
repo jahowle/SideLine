@@ -54,7 +54,7 @@ class Api::GamesController < ApplicationController
         end
 
 
-        render json: game
+        render json: game, include: :wagers
     end
 
     private

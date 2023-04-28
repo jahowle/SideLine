@@ -11,6 +11,7 @@ function WagerCard({
   taker,
   updateTaker,
   updateWagers,
+  addTaker,
   id,
   deleteWager,
   game,
@@ -40,7 +41,8 @@ function WagerCard({
     }).then((r) => {
       if (r.ok) {
         r.json().then((updatedWager) => {
-          updateTaker(updatedWager);
+          addTaker(updatedWager);
+          console.log(updatedWager);
           setUser({ ...user, balance: user.balance - updatedWager.amount });
         });
       } else {
