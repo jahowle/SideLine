@@ -88,6 +88,14 @@ function App() {
     setOpenWagers(updatedOpenWagers);
   }
 
+  function removeTaker(updatedWager) {
+    setOpenWagers([...openWagers, updatedWager]);
+    const updatedTakenWagers = takenWagers.filter(
+      (wager) => wager.id !== updatedWager.id
+    );
+    setTakenWagers(updatedTakenWagers);
+  }
+
   function updateWagers(newWager) {
     console.log("The new wager", newWager);
     if (newWager.status === "open") {
@@ -181,6 +189,7 @@ function App() {
                 deleteWager={deleteWager}
                 updateWagers={updateWagers}
                 addTaker={addTaker}
+                removeTaker={removeTaker}
               />
             ) : (
               <h2>Loading...</h2>

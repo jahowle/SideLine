@@ -16,6 +16,7 @@ function WagerCard({
   deleteWager,
   game,
   winner,
+  removeTaker,
 }) {
   const { user, setUser } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
@@ -62,7 +63,7 @@ function WagerCard({
       })
         .then((r) => r.json())
         .then((updatedWager) => {
-          updateTaker(updatedWager);
+          removeTaker(updatedWager);
           setUser({ ...user, balance: user.balance + updatedWager.amount });
         });
     } else if (maker.id === user.id) {

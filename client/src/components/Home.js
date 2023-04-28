@@ -10,6 +10,7 @@ function Home({
   updateWagers,
   deleteWager,
   addTaker,
+  removeTaker,
 }) {
   const openWagerCards = openWagers.map((wager) => {
     return (
@@ -50,6 +51,7 @@ function Home({
         updateWagers={updateWagers}
         deleteWager={deleteWager}
         winner={wager.winner}
+        removeTaker={removeTaker}
       />
     );
   });
