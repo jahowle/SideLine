@@ -139,6 +139,20 @@ function App() {
     setTakenWagers(updatedTakenWagers);
   }
 
+  function addToExpiredWagers(wager) {
+    setExpiredWagers([...expiredWagers, wager]);
+
+    const updatedOpenWagers = openWagers.filter((wager) => {
+      if (wager.id !== wager.id) {
+        return wager;
+      } else {
+        return null;
+      }
+    });
+
+    setOpenWagers(updatedOpenWagers);
+  }
+
   if (isLoggedIn) {
     return (
       <div className="App">
@@ -148,6 +162,7 @@ function App() {
           openWagers={openWagers}
           takenWagers={takenWagers}
           addToFinishedWagers={addToFinishedWagers}
+          addToExpiredWagers={addToExpiredWagers}
           games={games}
         />
 

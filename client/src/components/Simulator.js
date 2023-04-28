@@ -6,6 +6,7 @@ function Simulator({
   takenWagers,
   games,
   addToFinishedWagers,
+  addToExpiredWagers,
 }) {
   const [simulate, setSimulate] = useState(false);
 
@@ -26,7 +27,7 @@ function Simulator({
         })
           .then((r) => r.json())
           .then((updatedWager) => {
-            console.log(updatedWager);
+            addToExpiredWagers(updatedWager);
           });
       } else if (wager.status === "taken") {
         fetch(`/api/settle_wager/${wager.id}`, {
