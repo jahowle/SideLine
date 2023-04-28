@@ -81,30 +81,58 @@ function App() {
   function updateTaker(updatedWager) {
     console.log("The updated wager", updatedWager);
 
-    const updatedTakenWagers = openWagers.map((wager) => {
-      if (wager.id === updatedWager.id) {
-        return {
-          ...wager,
-          taker_id: updatedWager.taker_id,
-          taker: updatedWager.taker,
-          status: updatedWager.status,
-        };
-      } else {
-        return wager;
-      }
-    });
+    if (updatedWager.status === "taken") {
+      console.log("adding a taker to the wager");
+      const updatedTakenWagers = openWagers.map((wager) => {
+        if (wager.id === updatedWager.id) {
+          return {
+            ...wager,
+            taker_id: updatedWager.taker_id,
+            taker: updatedWager.taker,
+            status: updatedWager.status,
+          };
+        } else {
+          return wager;
+        }
+      });
 
-    const updatedOpenWagers = openWagers.filter((wager) => {
-      if (wager.id !== updatedWager.id) {
-        return wager;
-      } else {
-        return null;
-      }
-    });
+      const updatedOpenWagers = openWagers.filter((wager) => {
+        if (wager.id !== updatedWager.id) {
+          return wager;
+        } else {
+          return null;
+        }
+      });
 
-    setOpenWagers(updatedOpenWagers);
+      setOpenWagers(updatedOpenWagers);
 
-    setTakenWagers(updatedTakenWagers);
+      setTakenWagers(updatedTakenWagers);
+    } else if (updatedWager.status === "open") {
+      console.log("removing a taker from the wager");
+      const updatedOpenWagers = takenWagers.map((wager) => {
+        if (wager.id === updatedWager.id) {
+          return {
+            ...wager,
+            taker_id: null,
+            taker: null,
+            status: updatedWager.status,
+          };
+        } else {
+          return wager;
+        }
+      });
+
+      const updatedTakenWagers = takenWagers.filter((wager) => {
+        if (wager.id !== updatedWager.id) {
+          return wager;
+        } else {
+          return null;
+        }
+      });
+
+      setTakenWagers(updatedTakenWagers);
+      setOpenWagers(updatedOpenWagers);
+    }
   }
 
   function updateWinner(finishedGame) {
