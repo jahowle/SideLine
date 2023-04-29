@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../context/user";
 
 function Simulator({
   isLoaded,
@@ -9,6 +10,8 @@ function Simulator({
   addToExpiredWagers,
 }) {
   const [simulate, setSimulate] = useState(false);
+
+  const { user, setUser } = useContext(UserContext);
 
   function handleClick() {
     setSimulate(!simulate);
@@ -26,37 +29,36 @@ function Simulator({
     })
       .then((r) => r.json())
       .then((wagers) => {
-        console.log(wagers);
+        sortUpdatedWagers(wagers);
       });
   }
 
-  function handleSimulate() {
-    const wagersToSettle = openWagers.concat(takenWagers);
-    wagersToSettle.forEach((wager) => {
-      if (wager.status === "open") {
-        fetch(`/api/settle_wager/${wager.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ array: "expired" }),
-        })
-          .then((r) => r.json())
-          .then((updatedWager) => {
-            addToExpiredWagers(updatedWager);
+  function sortUpdatedWagers(wagers) {
+    wagers.forEach((wager) => {
+      if (wager.status === "expired") {
+        if (wager.maker_id === user.id) {
+          setUser({
+            ...user,
+            balance: user.balance + wager.amount,
           });
-      } else if (wager.status === "taken") {
-        fetch(`/api/settle_wager/${wager.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: "finished" }),
-        })
-          .then((r) => r.json())
-          .then((updatedWager) => {
-            addToFinishedWagers(updatedWager);
+        }
+        addToExpiredWagers(wager);
+      } else if (wager.status === "finished") {
+        if (wager.winner === user.id) {
+          setUser({
+            ...user,
+            balance: user.balance + wager.amount * 2,
+            wins: user.wins + 1,
           });
+          console.log("You won");
+        } else {
+          setUser({
+            ...user,
+            losses: user.losses + 1,
+          });
+        }
+
+        addToFinishedWagers(wager);
       }
     });
   }

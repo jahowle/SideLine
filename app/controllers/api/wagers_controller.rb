@@ -70,6 +70,7 @@ class Api::WagersController < ApplicationController
             
             if wager.status == "open"
                 wager.update(status: "expired")
+                wager.maker.update(balance: wager.maker.balance + wager.amount)
             elsif wager.pick == game_winner
                 wager.update(status: "finished", winner: wager.maker.id, loser: wager.taker.id)
                 wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
@@ -82,7 +83,7 @@ class Api::WagersController < ApplicationController
         end
 
       
-        render json: wagers
+        render json: wagers, include: [:taker, :maker, :game]
       end
 
     
