@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { UserContext } from "../context/user";
 
 function Login() {
@@ -77,8 +77,12 @@ function Login() {
         {errors.length > 0 && <p className="text-red-400">{errors}</p>}
       </form>
 
-      <h3>Or login with Google</h3>
-      <button onClick={handleGoogleLogin}>Login with Google</button>
+      <div className="flex flex-col items-center">
+        <h3 className="mb-2">Don't have an account yet?</h3>
+        <NavLink to="/">
+          <button className="btn">Signup</button>
+        </NavLink>
+      </div>
     </div>
   );
 }
