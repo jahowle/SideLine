@@ -19,8 +19,6 @@ function App() {
   const [expiredWagers, setExpiredWagers] = useState([]);
   const [finishedWagers, setFinishedWagers] = useState([]);
 
-  const [simState, setSimState] = useState(false);
-
   const { isLoggedIn, setUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -43,7 +41,7 @@ function App() {
         console.log("error getting games");
       }
     });
-  }, [simState]);
+  }, []);
 
   function sortWagers(wagers) {
     const openWagers = wagers.filter((wager) => {

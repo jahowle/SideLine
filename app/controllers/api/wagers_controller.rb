@@ -58,6 +58,36 @@ class Api::WagersController < ApplicationController
         
     end
 
+    def settle_wagers
+        data = JSON.parse(request.body.read)
+        
+        wagers = data["wagersToSettle"].map do |wager|
+          wager_to_settle = Wager.find(wager["id"])
+        end
+
+        wagers.each do |wager|
+            game_winner = wager.game.home_score > wager.game.away_score ? wager.game.home_team : wager.game.away_team
+            
+            if wager.status == "open"
+                wager.update(status: "expired")
+            elsif wager.pick == game_winner
+                wager.update(status: "finished", winner: wager.maker.id, loser: wager.taker.id)
+                wager.maker.update(wins: wager.maker.wins + 1, balance: wager.maker.balance + wager.amount * 2)
+                wager.taker.update(losses: wager.taker.losses + 1)
+            else
+                wager.update(status: "finished", winner: wager.taker.id, loser: wager.maker.id)
+                wager.taker.update(wins: wager.taker.wins + 1, balance: wager.taker.balance + wager.amount * 2)
+                wager.maker.update(losses: wager.maker.losses + 1)
+            end
+        end
+
+      
+        render json: wagers
+      end
+
+    
+
+
     def destroy
         wager = Wager.find(params[:id])
         wager.destroy

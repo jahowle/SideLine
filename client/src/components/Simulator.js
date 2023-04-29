@@ -14,6 +14,22 @@ function Simulator({
     setSimulate(!simulate);
   }
 
+  function handleSimulateAlt() {
+    const wagersToSettle = openWagers.concat(takenWagers);
+
+    fetch("/api/settle_wagers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ wagersToSettle }),
+    })
+      .then((r) => r.json())
+      .then((wagers) => {
+        console.log(wagers);
+      });
+  }
+
   function handleSimulate() {
     const wagersToSettle = openWagers.concat(takenWagers);
     wagersToSettle.forEach((wager) => {
@@ -23,7 +39,7 @@ function Simulator({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "expired" }),
+          body: JSON.stringify({ array: "expired" }),
         })
           .then((r) => r.json())
           .then((updatedWager) => {
@@ -58,7 +74,7 @@ function Simulator({
             </button>
           </div>
         ) : (
-          <button className="btn btn-primary my-4" onClick={handleSimulate}>
+          <button className="btn btn-primary my-4" onClick={handleSimulateAlt}>
             Simulate Games
           </button>
         )}
