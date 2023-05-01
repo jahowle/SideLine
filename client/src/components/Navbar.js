@@ -19,7 +19,7 @@ function Navbar({ games, isLoaded, updateWagers }) {
             <button className="btn mx-4">Home</button>
           </Link>
           <Link to="/my-profile">
-            <button className="btn mx-4">My Pofile</button>
+            <button className="btn mx-4">My Profile</button>
           </Link>
           <button onClick={() => setShowModal(true)} className="btn mx-4">
             Create Wager

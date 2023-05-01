@@ -87,8 +87,6 @@ class Api::WagersController < ApplicationController
       end
 
     
-
-
     def destroy
         wager = Wager.find(params[:id])
         wager.destroy
