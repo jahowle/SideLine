@@ -137,18 +137,24 @@ function App() {
     setTakenWagers(updatedTakenWagers);
   }
 
-  function addToExpiredWagers(wager) {
-    setExpiredWagers([...expiredWagers, wager]);
+  function addToExpiredWagers(wagers) {
+    console.log("wagers", wagers);
 
-    const updatedOpenWagers = openWagers.filter((wager) => {
-      if (wager.id !== wager.id) {
-        return wager;
-      } else {
-        return null;
-      }
-    });
+    const expiredWagersToAdd = expiredWagers.concat(wagers);
 
-    setOpenWagers(updatedOpenWagers);
+    console.log("expiredWagersToAdd", expiredWagersToAdd);
+
+    setExpiredWagers(expiredWagersToAdd);
+
+    // const updatedOpenWagers = openWagers.filter((wager) => {
+    //   if (wager.id !== wager.id) {
+    //     return wager;
+    //   } else {
+    //     return null;
+    //   }
+    // });
+
+    // setOpenWagers(updatedOpenWagers);
   }
 
   if (isLoggedIn) {

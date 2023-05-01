@@ -34,6 +34,14 @@ function Simulator({
   }
 
   function sortUpdatedWagers(wagers) {
+    const newExpiredWagers = wagers.map((wager) => {
+      if (wager.status === "expired") {
+        return wager;
+      }
+    });
+
+    addToExpiredWagers(newExpiredWagers);
+
     wagers.forEach((wager) => {
       if (wager.status === "expired") {
         if (wager.maker_id === user.id) {
@@ -42,7 +50,6 @@ function Simulator({
             balance: user.balance + wager.amount,
           });
         }
-        addToExpiredWagers(wager);
       } else if (wager.status === "finished") {
         if (wager.winner === user.id) {
           setUser({
