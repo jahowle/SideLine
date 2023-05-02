@@ -10,11 +10,18 @@ class Wager < ApplicationRecord
     validate :check_maker_balance, on: :create, :unless => :flag?
     # validate :check_taker_balance
     validate :cant_take_own_wager, on: :update
+    validate :no_negative_amounts
 
     attr_accessor :flag
 
     def flag?
         @flag
+    end
+
+    def no_negative_amounts
+        if self.amount < 0
+            self.errors.add(:amount, "You can't wager a negative amount")
+        end
     end
 
     def check_maker_balance
