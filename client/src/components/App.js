@@ -19,7 +19,9 @@ function App() {
   const [expiredWagers, setExpiredWagers] = useState([]);
   const [finishedWagers, setFinishedWagers] = useState([]);
 
-  const { isLoggedIn, setUser } = useContext(UserContext);
+  const { isLoggedIn, setUser, user } = useContext(UserContext);
+
+  console.log("expiredWagers in app.js", expiredWagers);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
@@ -80,11 +82,14 @@ function App() {
 
   function addTaker(updatedWager) {
     setTakenWagers([...takenWagers, updatedWager]);
+
     const updatedOpenWagers = openWagers.filter(
       (wager) => wager.id !== updatedWager.id
     );
     setOpenWagers(updatedOpenWagers);
   }
+
+  console.log("taken wagers", takenWagers);
 
   function removeTaker(updatedWager) {
     setOpenWagers([...openWagers, updatedWager]);
@@ -123,38 +128,55 @@ function App() {
     }
   }
 
-  function addToFinishedWagers(wager) {
-    setFinishedWagers([...finishedWagers, wager]);
-
-    const updatedTakenWagers = takenWagers.filter((wager) => {
-      if (wager.id !== wager.id) {
+  function sortUpdatedWagers(wagersToUpdate) {
+    const newExpiredWagers = wagersToUpdate.map((wager) => {
+      if (wager.status === "expired") {
         return wager;
       } else {
         return null;
       }
     });
 
-    setTakenWagers(updatedTakenWagers);
-  }
+    const newFinishedWagers = wagersToUpdate.map((wager) => {
+      if (wager.status === "finished") {
+        return wager;
+      } else {
+        return null;
+      }
+    });
 
-  function addToExpiredWagers(wagers) {
-    console.log("wagers", wagers);
+    const totalExpiredWagers = expiredWagers.concat(newExpiredWagers);
+    const totalFinishedWagers = finishedWagers.concat(newFinishedWagers);
 
-    const expiredWagersToAdd = expiredWagers.concat(wagers);
+    setExpiredWagers(totalExpiredWagers);
+    setOpenWagers([]);
 
-    console.log("expiredWagersToAdd", expiredWagersToAdd);
+    setFinishedWagers(totalFinishedWagers);
+    setTakenWagers([]);
 
-    setExpiredWagers(expiredWagersToAdd);
-
-    // const updatedOpenWagers = openWagers.filter((wager) => {
-    //   if (wager.id !== wager.id) {
-    //     return wager;
-    //   } else {
-    //     return null;
-    //   }
-    // });
-
-    // setOpenWagers(updatedOpenWagers);
+    wagersToUpdate.forEach((wager) => {
+      if (wager.status === "expired") {
+        if (wager.maker_id === user.id) {
+          setUser({
+            ...user,
+            balance: user.balance + wager.amount,
+          });
+        }
+      } else if (wager.status === "finished") {
+        if (wager.winner === user.id) {
+          setUser({
+            ...user,
+            balance: user.balance + wager.amount * 2,
+            wins: user.wins + 1,
+          });
+        } else {
+          setUser({
+            ...user,
+            losses: user.losses + 1,
+          });
+        }
+      }
+    });
   }
 
   if (isLoggedIn) {
@@ -165,9 +187,8 @@ function App() {
           isLoaded={isLoaded}
           openWagers={openWagers}
           takenWagers={takenWagers}
-          addToFinishedWagers={addToFinishedWagers}
-          addToExpiredWagers={addToExpiredWagers}
           games={games}
+          sortUpdatedWagers={sortUpdatedWagers}
         />
 
         <Switch>

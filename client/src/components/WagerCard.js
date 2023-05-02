@@ -43,7 +43,6 @@ function WagerCard({
       if (r.ok) {
         r.json().then((updatedWager) => {
           addTaker(updatedWager);
-          console.log(updatedWager);
           setUser({ ...user, balance: user.balance - updatedWager.amount });
         });
       } else {

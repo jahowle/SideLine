@@ -57,45 +57,47 @@ function Home({
   });
 
   const expiredWagerCards = expiredWagers.map((wager) => {
-    return (
-      <WagerCard
-        key={wager.id}
-        id={wager.id}
-        amount={wager.amount}
-        pick={wager.pick}
-        homeTeam={wager.game.home_team}
-        awayTeam={wager.game.away_team}
-        status={wager.status}
-        maker={wager.maker}
-        taker={wager.taker}
-        updateTaker={updateTaker}
-        game={wager.game}
-        updateWagers={updateWagers}
-        deleteWager={deleteWager}
-        winner={wager.winner}
-      />
-    );
+    if (wager)
+      return (
+        <WagerCard
+          key={wager.id}
+          id={wager.id}
+          amount={wager.amount}
+          pick={wager.pick}
+          homeTeam={wager.game.home_team}
+          awayTeam={wager.game.away_team}
+          status={wager.status}
+          maker={wager.maker}
+          taker={wager.taker}
+          updateTaker={updateTaker}
+          game={wager.game}
+          updateWagers={updateWagers}
+          deleteWager={deleteWager}
+          winner={wager.winner}
+        />
+      );
   });
 
   const finishedWagerCards = finishedWagers.map((wager) => {
-    return (
-      <WagerCard
-        key={wager.id}
-        id={wager.id}
-        amount={wager.amount}
-        pick={wager.pick}
-        homeTeam={wager.game.home_team}
-        awayTeam={wager.game.away_team}
-        status={wager.status}
-        maker={wager.maker}
-        taker={wager.taker}
-        updateTaker={updateTaker}
-        game={wager.game}
-        updateWagers={updateWagers}
-        deleteWager={deleteWager}
-        winner={wager.winner}
-      />
-    );
+    if (wager)
+      return (
+        <WagerCard
+          key={wager.id}
+          id={wager.id}
+          amount={wager.amount}
+          pick={wager.pick}
+          homeTeam={wager.game.home_team}
+          awayTeam={wager.game.away_team}
+          status={wager.status}
+          maker={wager.maker}
+          taker={wager.taker}
+          updateTaker={updateTaker}
+          game={wager.game}
+          updateWagers={updateWagers}
+          deleteWager={deleteWager}
+          winner={wager.winner}
+        />
+      );
   });
 
   return (

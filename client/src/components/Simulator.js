@@ -7,6 +7,7 @@ function Simulator({
   takenWagers,
   games,
   addToFinishedWagers,
+  sortUpdatedWagers,
   addToExpiredWagers,
 }) {
   const [simulate, setSimulate] = useState(false);
@@ -31,43 +32,6 @@ function Simulator({
       .then((wagers) => {
         sortUpdatedWagers(wagers);
       });
-  }
-
-  function sortUpdatedWagers(wagers) {
-    const newExpiredWagers = wagers.map((wager) => {
-      if (wager.status === "expired") {
-        return wager;
-      }
-    });
-
-    addToExpiredWagers(newExpiredWagers);
-
-    wagers.forEach((wager) => {
-      if (wager.status === "expired") {
-        if (wager.maker_id === user.id) {
-          setUser({
-            ...user,
-            balance: user.balance + wager.amount,
-          });
-        }
-      } else if (wager.status === "finished") {
-        if (wager.winner === user.id) {
-          setUser({
-            ...user,
-            balance: user.balance + wager.amount * 2,
-            wins: user.wins + 1,
-          });
-          console.log("You won");
-        } else {
-          setUser({
-            ...user,
-            losses: user.losses + 1,
-          });
-        }
-
-        addToFinishedWagers(wager);
-      }
-    });
   }
 
   if (!isLoaded) {
