@@ -21,7 +21,7 @@ function App() {
 
   const { isLoggedIn, setUser, user } = useContext(UserContext);
 
-  console.log("expiredWagers in app.js", expiredWagers);
+  console.log("user balance:", user.balance);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
@@ -89,8 +89,6 @@ function App() {
     setOpenWagers(updatedOpenWagers);
   }
 
-  console.log("taken wagers", takenWagers);
-
   function removeTaker(updatedWager) {
     setOpenWagers([...openWagers, updatedWager]);
     const updatedTakenWagers = takenWagers.filter(
@@ -154,28 +152,30 @@ function App() {
     setFinishedWagers(totalFinishedWagers);
     setTakenWagers([]);
 
+    let amountToIncrease = 0;
+    let winsToIncrease = 0;
+    let lossesToIncrease = 0;
+
     wagersToUpdate.forEach((wager) => {
       if (wager.status === "expired") {
         if (wager.maker_id === user.id) {
-          setUser({
-            ...user,
-            balance: user.balance + wager.amount,
-          });
+          amountToIncrease += wager.amount;
         }
       } else if (wager.status === "finished") {
         if (wager.winner === user.id) {
-          setUser({
-            ...user,
-            balance: user.balance + wager.amount * 2,
-            wins: user.wins + 1,
-          });
+          winsToIncrease += 1;
+          amountToIncrease += wager.amount;
         } else {
-          setUser({
-            ...user,
-            losses: user.losses + 1,
-          });
+          lossesToIncrease += 1;
         }
       }
+    });
+
+    setUser({
+      ...user,
+      balance: user.balance + amountToIncrease,
+      wins: user.wins + winsToIncrease,
+      losses: user.losses + lossesToIncrease,
     });
   }
 
