@@ -107,6 +107,7 @@ function WagerCard({
               <h2> Status: {status} </h2>
             )}
           </h2>
+          <h2>Amount: {amount}</h2>
           <h2>Wager ID: {id}</h2>
         </div>
         <div className="justify-end">{CancelButton()}</div>
@@ -139,6 +140,8 @@ function WagerCard({
               <h2> Status: {status} </h2>
             )}
           </h2>
+          <h2>Amount: {amount}</h2>
+          <h2>Wager ID: {id}</h2>
         </div>
         <div className="justify-end">
           {taker || status === "expired" ? null : (
