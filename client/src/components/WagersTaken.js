@@ -2,24 +2,10 @@ import React, { useContext } from "react";
 import { UserContext } from "../context/user";
 import WagerCard from "./WagerCard";
 
-function WagersTaken({
-  openWagers,
-  takenWagers,
-  expiredWagers,
-  finishedWagers,
-  updateWagers,
-  updateTaker,
-}) {
+function WagersTaken({ allWagers, updateWagers, updateTaker }) {
   const { user } = useContext(UserContext);
 
-  const wagers = [
-    ...openWagers,
-    ...takenWagers,
-    ...expiredWagers,
-    ...finishedWagers,
-  ];
-
-  const wagersTaken = wagers.map((wager) => {
+  const wagersTaken = allWagers.map((wager) => {
     if (wager) {
       if (wager.taker_id === user.id) {
         return (
@@ -44,7 +30,12 @@ function WagersTaken({
       }
     }
   });
-  return <div className="flex flex-row flex-wrap w-9/12">{wagersTaken}</div>;
+  return (
+    <div className="flex flex-col items-center mt-8">
+      <h1>Wagers Taken</h1>
+      <div className="flex flex-row flex-wrap w-9/12">{wagersTaken}</div>
+    </div>
+  );
 }
 
 export default WagersTaken;

@@ -18,16 +18,18 @@ function App() {
   const [takenWagers, setTakenWagers] = useState([]);
   const [expiredWagers, setExpiredWagers] = useState([]);
   const [finishedWagers, setFinishedWagers] = useState([]);
+  const [allWagers, setAllWagers] = useState([]);
 
   const { isLoggedIn, setUser, user } = useContext(UserContext);
 
-  console.log("user balance:", user.balance);
+  console.log("all wagers in app.js", allWagers);
 
   useEffect(() => {
     fetch("/api/wagers").then((r) => {
       if (r.ok) {
         r.json().then((wagers) => {
           sortWagers(wagers);
+          setAllWagers(wagers);
         });
       } else {
         console.log("error getting wagers");
@@ -108,6 +110,8 @@ function App() {
     } else if (newWager.status === "finished") {
       setFinishedWagers([...finishedWagers, newWager]);
     }
+
+    setAllWagers([...allWagers, newWager]);
   }
 
   function deleteWager(id, status) {
@@ -151,6 +155,9 @@ function App() {
 
     setFinishedWagers(totalFinishedWagers);
     setTakenWagers([]);
+
+    const totalWagers = totalExpiredWagers.concat(totalFinishedWagers);
+    setAllWagers(totalWagers);
 
     let amountToIncrease = 0;
     let winsToIncrease = 0;
@@ -199,10 +206,7 @@ function App() {
           <Route path="/my-profile">
             {isLoaded ? (
               <MyProfile
-                openWagers={openWagers}
-                takenWagers={takenWagers}
-                expiredWagers={expiredWagers}
-                finishedWagers={finishedWagers}
+                allWagers={allWagers}
                 deleteWager={deleteWager}
                 updateWagers={updateWagers}
               />

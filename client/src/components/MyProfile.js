@@ -5,15 +5,9 @@ import WagersTaken from "./WagersTaken";
 import AddFunds from "./AddFunds";
 import UserStats from "./UserStats";
 
-function MyProfile({
-  openWagers,
-  takenWagers,
-  expiredWagers,
-  finishedWagers,
-  updateWagers,
-  updateTaker,
-  deleteWager,
-}) {
+function MyProfile({ allWagers, updateWagers, updateTaker, deleteWager }) {
+  console.log("allWagers in MyProfile:", allWagers);
+
   return (
     <div className="mt-8 flex flex-col items-center">
       <UserStats />
@@ -33,23 +27,14 @@ function MyProfile({
       <div className="flex flex-col items-center">
         <Route path="/my-profile/wagers-made">
           <WagersMade
-            openWagers={openWagers}
-            takenWagers={takenWagers}
-            expiredWagers={expiredWagers}
-            finishedWagers={finishedWagers}
+            allWagers={allWagers}
             updateWagers={updateWagers}
             updateTaker={updateTaker}
             deleteWager={deleteWager}
           />
         </Route>
         <Route path="/my-profile/wagers-taken">
-          <WagersTaken
-            openWagers={openWagers}
-            takenWagers={takenWagers}
-            expiredWagers={expiredWagers}
-            finishedWagers={finishedWagers}
-            updateTaker={updateTaker}
-          />
+          <WagersTaken allWagers={allWagers} updateTaker={updateTaker} />
         </Route>
         <Route path="/my-profile/add-funds">
           <AddFunds />

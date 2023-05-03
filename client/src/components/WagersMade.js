@@ -1,26 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import WagerCard from "./WagerCard";
 import { UserContext } from "../context/user";
 
-function WagersMade({
-  openWagers,
-  takenWagers,
-  expiredWagers,
-  finishedWagers,
-  updateWagers,
-  updateTaker,
-  deleteWager,
-}) {
+function WagersMade({ allWagers, updateWagers, updateTaker, deleteWager }) {
   const { user } = useContext(UserContext);
 
-  const wagers = [
-    ...openWagers,
-    ...takenWagers,
-    ...expiredWagers,
-    ...finishedWagers,
-  ];
+  console.log(allWagers);
 
-  const wagersMade = wagers.map((wager) => {
+  const wagersMade = allWagers.map((wager) => {
     if (wager) {
       if (wager.maker_id === user.id) {
         return (
@@ -46,7 +33,13 @@ function WagersMade({
       }
     }
   });
-  return <div className="flex flex-wrap">{wagersMade}</div>;
+  return (
+    <div className="flex flex-col items-center mt-8">
+      <h1>Wagers Made</h1>
+
+      <div className="flex flex-wrap">{wagersMade}</div>
+    </div>
+  );
 }
 
 export default WagersMade;
