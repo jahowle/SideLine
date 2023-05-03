@@ -164,7 +164,7 @@ function App() {
       } else if (wager.status === "finished") {
         if (wager.winner === user.id) {
           winsToIncrease += 1;
-          amountToIncrease += wager.amount;
+          amountToIncrease += wager.amount * 2;
         } else {
           lossesToIncrease += 1;
         }
@@ -197,14 +197,18 @@ function App() {
           </Route>
 
           <Route path="/my-profile">
-            <MyProfile
-              openWagers={openWagers}
-              takenWagers={takenWagers}
-              expiredWagers={expiredWagers}
-              finishedWagers={finishedWagers}
-              deleteWager={deleteWager}
-              updateWagers={updateWagers}
-            />
+            {isLoaded ? (
+              <MyProfile
+                openWagers={openWagers}
+                takenWagers={takenWagers}
+                expiredWagers={expiredWagers}
+                finishedWagers={finishedWagers}
+                deleteWager={deleteWager}
+                updateWagers={updateWagers}
+              />
+            ) : (
+              <h1>Loading...</h1>
+            )}
           </Route>
 
           <Route exact path="/add-funds">

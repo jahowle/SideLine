@@ -21,30 +21,32 @@ function WagersMade({
   ];
 
   const wagersMade = wagers.map((wager) => {
-    if (wager.maker_id === user.id) {
-      return (
-        <WagerCard
-          key={wager.id}
-          id={wager.id}
-          amount={wager.amount}
-          pick={wager.pick}
-          homeTeam={wager.game.home_team}
-          awayTeam={wager.game.away_team}
-          status={wager.status}
-          maker={wager.maker}
-          taker={wager.taker}
-          game={wager.game}
-          updateWagers={updateWagers}
-          updateTaker={updateTaker}
-          deleteWager={deleteWager}
-          winner={wager.winner}
-        />
-      );
-    } else {
-      return null;
+    if (wager) {
+      if (wager.maker_id === user.id) {
+        return (
+          <WagerCard
+            key={wager.id}
+            id={wager.id}
+            amount={wager.amount}
+            pick={wager.pick}
+            homeTeam={wager.game.home_team}
+            awayTeam={wager.game.away_team}
+            status={wager.status}
+            maker={wager.maker}
+            taker={wager.taker}
+            game={wager.game}
+            updateWagers={updateWagers}
+            updateTaker={updateTaker}
+            deleteWager={deleteWager}
+            winner={wager.winner}
+          />
+        );
+      } else {
+        return null;
+      }
     }
   });
-  return <div className="flex">{wagersMade}</div>;
+  return <div className="flex flex-wrap">{wagersMade}</div>;
 }
 
 export default WagersMade;

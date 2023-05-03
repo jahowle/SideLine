@@ -1,18 +1,7 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../context/user";
 
-function Simulator({
-  isLoaded,
-  openWagers,
-  takenWagers,
-  games,
-  addToFinishedWagers,
-  sortUpdatedWagers,
-  addToExpiredWagers,
-}) {
+function Simulator({ isLoaded, openWagers, takenWagers, sortUpdatedWagers }) {
   const [simulate, setSimulate] = useState(false);
-
-  const { user, setUser } = useContext(UserContext);
 
   function handleClick() {
     setSimulate(!simulate);

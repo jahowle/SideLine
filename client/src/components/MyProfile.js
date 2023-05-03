@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/user";
-import WagerCard from "./WagerCard";
-import { Link, useRouteMatch, Route } from "react-router-dom";
+import React from "react";
+import { Link, Route } from "react-router-dom";
 import WagersMade from "./WagersMade";
 import WagersTaken from "./WagersTaken";
 import AddFunds from "./AddFunds";
@@ -16,9 +14,6 @@ function MyProfile({
   updateTaker,
   deleteWager,
 }) {
-  const { user } = useContext(UserContext);
-  const match = useRouteMatch();
-
   return (
     <div className="mt-8 flex flex-col items-center">
       <UserStats />
